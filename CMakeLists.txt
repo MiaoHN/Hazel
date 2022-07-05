@@ -8,5 +8,13 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 link_directories(${PROJECT_SOURCE_DIR}/lib)
 
-add_subdirectory(hazel)
-add_subdirectory(sandbox)
+include_directories(hazel/src)
+
+add_subdirectory(hazel/vendor/spdlog)
+include_directories(hazel/vendor/spdlog/include)
+
+file(GLOB HZ_SRC "hazel/src/hazel/*.cpp")
+add_library(hazel STATIC ${HZ_SRC})
+
+add_executable(sandbox sandbox/sandbox_app.cpp)
+target_link_libraries(sandbox PUBLIC hazel)

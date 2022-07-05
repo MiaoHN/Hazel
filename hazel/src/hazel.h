@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #include "hazel/application.h"
+#include "hazel/log.h"
 
 // ----- Entry Point
 #include "hazel/entry_point.h"
