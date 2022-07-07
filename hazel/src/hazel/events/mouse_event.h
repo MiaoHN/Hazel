@@ -1,8 +1,7 @@
 #ifndef __MOUSE_EVENT_H__
 #define __MOUSE_EVENT_H__
 
-#include <sstream>
-
+#include "hzpch.h"
 #include "event.h"
 
 namespace hazel {

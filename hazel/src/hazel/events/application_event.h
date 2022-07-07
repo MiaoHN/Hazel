@@ -1,10 +1,9 @@
 #ifndef __APPLICATION_EVENT_H__
 #define __APPLICATION_EVENT_H__
 
-#include <sstream>
-
-#include "event.h"
+#include "hzpch.h"
 #include "hazel/core.h"
+#include "hazel/events/event.h"
 
 namespace hazel {
 

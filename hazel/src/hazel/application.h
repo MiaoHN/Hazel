@@ -1,8 +1,10 @@
 #ifndef __APPLICATION_H__
 #define __APPLICATION_H__
 
-#include "core.h"
-#include "events/event.h"
+#include "hzpch.h"
+#include "hazel/core.h"
+#include "hazel/events/event.h"
+#include "hazel/window.h"
 
 namespace hazel {
 
@@ -12,6 +14,10 @@ class HAZEL_API Application {
   virtual ~Application();
 
   void Run();
+
+ private:
+  std::unique_ptr<Window> _window;
+  bool _running = true;
 };
 
 // To be defined in client

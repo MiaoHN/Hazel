@@ -3,8 +3,6 @@
 
 // For use by Hazel applications
 
-#include <stdio.h>
-
 #include "hazel/application.h"
 #include "hazel/log.h"
 
