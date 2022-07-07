@@ -11,4 +11,6 @@
 #define HAZEL_API
 #endif
 
+#define BIT(x) (1 << x)
+
 #endif  // __CORE_H__
