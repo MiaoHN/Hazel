@@ -1,8 +1,8 @@
 #ifndef __EVENT_H__
 #define __EVENT_H__
 
-#include "hzpch.h"
 #include "hazel/core.h"
+#include "hzpch.h"
 
 namespace hazel {
 
@@ -34,9 +34,8 @@ enum EventCategory {
 };
 
 class HAZEL_API Event {
-  friend class EventDispatcher;
-
  public:
+  bool handled = false;
   virtual EventType GetEventType() const = 0;
   virtual const char* GetName() const = 0;
   virtual int GetCategoryFlags() const = 0;
@@ -45,9 +44,6 @@ class HAZEL_API Event {
   inline bool IsInCategory(EventCategory category) {
     return GetCategoryFlags() & category;
   }
-
- protected:
-  bool _handled = false;
 };
 
 class EventDispatcher {
@@ -60,7 +56,7 @@ class EventDispatcher {
   template <typename T>
   bool Dispatch(EventFn<T> func) {
     if (_event.GetEventType() == T::GetStaticType()) {
-      _event._handled = func(*(T*)&_event);
+      _event.handled = func(*(T*)&_event);
       return true;
     }
     return false;

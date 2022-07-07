@@ -3,6 +3,7 @@
 
 #include "hazel/core.h"
 #include "hazel/events/application_event.h"
+#include "hazel/layer_stack.h"
 #include "hazel/window.h"
 #include "hzpch.h"
 
@@ -17,11 +18,16 @@ class HAZEL_API Application {
 
   void OnEvent(Event& e);
 
+  void PushLayer(Layer* layer);
+  void PushOverlay(Layer* layer);
+
+ private:
   bool OnWindowClose(WindowCloseEvent& e);
 
  private:
   std::unique_ptr<Window> _window;
   bool _running = true;
+  LayerStack _layerStack;
 };
 
 // To be defined in client
