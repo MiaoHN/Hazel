@@ -1,6 +1,6 @@
 #include "application.h"
 
-#include <GLFW/glfw3.h>
+#include <glad/glad.h>
 
 #include "hazel/events/application_event.h"
 #include "log.h"

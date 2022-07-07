@@ -1,9 +1,9 @@
 #ifndef __WINDOW_H__
 #define __WINDOW_H__
 
-#include "hzpch.h"
 #include "hazel/core.h"
 #include "hazel/events/event.h"
+#include "hzpch.h"
 
 namespace hazel {
 

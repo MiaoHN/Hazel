@@ -1,11 +1,11 @@
 #ifndef __WINDOWS_WINDOW_H__
 #define __WINDOWS_WINDOW_H__
 
+// clang-format off
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
+// clang-format on
 
-#include "hzpch.h"
-#include "hazel/core.h"
-#include "hazel/log.h"
 #include "hazel/window.h"
 
 namespace hazel {
