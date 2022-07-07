@@ -1,10 +1,10 @@
 #ifndef __APPLICATION_H__
 #define __APPLICATION_H__
 
-#include "hzpch.h"
 #include "hazel/core.h"
-#include "hazel/events/event.h"
+#include "hazel/events/application_event.h"
 #include "hazel/window.h"
+#include "hzpch.h"
 
 namespace hazel {
 
@@ -14,6 +14,10 @@ class HAZEL_API Application {
   virtual ~Application();
 
   void Run();
+
+  void OnEvent(Event& e);
+
+  bool OnWindowClose(WindowCloseEvent& e);
 
  private:
   std::unique_ptr<Window> _window;

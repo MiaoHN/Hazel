@@ -1,8 +1,8 @@
 #ifndef __KEY_EVENT_H__
 #define __KEY_EVENT_H__
 
-#include "hzpch.h"
 #include "hazel/events/event.h"
+#include "hzpch.h"
 
 namespace hazel {
 
@@ -17,7 +17,7 @@ class HAZEL_API KeyEvent : public Event {
  protected:
   KeyEvent(int keyCode) : _keyCode(keyCode) {}
 
- private:
+ protected:
   int _keyCode;
 };
 
