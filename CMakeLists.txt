@@ -12,14 +12,13 @@ link_directories(${PROJECT_SOURCE_DIR}/lib)
 # Hazel
 # ##############################################################################
 
-# spdlog
-add_subdirectory(hazel/vendor/spdlog)
+# spdlog add_subdirectory(hazel/vendor/spdlog)
 include_directories(hazel/vendor/spdlog/include)
 
 # glad
 set(GLAD_SRC hazel/vendor/glad/src/glad.c)
 if(NOT WIN32)
-  LIST(APPEND LIBS dl)
+  list(APPEND LIBS dl)
 endif(NOT WIN32)
 include_directories(hazel/vendor/glad/include)
 
@@ -31,11 +30,20 @@ add_subdirectory(hazel/vendor/glfw)
 include_directories(hazel/vendor/glfw/include)
 list(APPEND LIBS glfw ${GLFW_LIBRARIES})
 
+# Imgui
+include_directories(hazel/vendor/imgui)
+
 include_directories(hazel/src)
 
-file(GLOB HZ_SRC "hazel/src/hazel/*.cpp")
-file(GLOB HZ_WIN "hazel/src/platform/windows/*.cpp")
-add_library(hazel STATIC ${HZ_SRC} ${HZ_WIN} ${GLAD_SRC})
+file(
+  GLOB
+  HZ_SRC
+  "hazel/src/hazel/*.cpp"
+  "hazel/src/hazel/imgui/*.cpp"
+  "hazel/src/platform/windows/*.cpp"
+  "hazel/src/platform/opengl/*.cpp"
+  "hazel/vendor/imgui/*.cpp")
+add_library(hazel STATIC ${HZ_SRC} ${GLAD_SRC})
 target_link_libraries(hazel PUBLIC ${LIBS} Opengl32)
 
 # ##############################################################################

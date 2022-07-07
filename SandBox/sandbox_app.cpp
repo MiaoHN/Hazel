@@ -13,7 +13,10 @@ class ExampleLayer : public hazel::Layer {
 
 class Sandbox : public hazel::Application {
  public:
-  Sandbox() { PushLayer(new ExampleLayer()); }
+  Sandbox() {
+    PushLayer(new ExampleLayer());
+    PushOverlay(new hazel::ImGuiLayer());
+  }
   ~Sandbox() {}
 
  private:

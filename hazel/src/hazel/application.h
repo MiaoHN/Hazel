@@ -21,6 +21,10 @@ class HAZEL_API Application {
   void PushLayer(Layer* layer);
   void PushOverlay(Layer* layer);
 
+  inline Window& GetWindow() { return *_window; }
+
+  inline static Application& Get() { return *s_instance; }
+
  private:
   bool OnWindowClose(WindowCloseEvent& e);
 
@@ -28,6 +32,9 @@ class HAZEL_API Application {
   std::unique_ptr<Window> _window;
   bool _running = true;
   LayerStack _layerStack;
+
+ private:
+  static Application* s_instance;
 };
 
 // To be defined in client
