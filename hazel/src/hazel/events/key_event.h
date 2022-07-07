@@ -58,6 +58,21 @@ class HAZEL_API KeyReleasedEvent : public KeyEvent {
   virtual const char* GetName() const override { return "KeyReleased"; }
 };
 
+class HAZEL_API KeyTypedEvent : public KeyEvent {
+ public:
+  KeyTypedEvent(int keyCode) : KeyEvent(keyCode) {}
+
+  std::string ToString() const override {
+    std::stringstream ss;
+    ss << "KeyTyped: " << _keyCode;
+    return ss.str();
+  }
+
+  static EventType GetStaticType() { return EventType::KeyTyped; }
+  virtual EventType GetEventType() const override { return GetStaticType(); }
+  virtual const char* GetName() const override { return "KeyTyped"; }
+};
+
 }  // namespace hazel
 
 #endif  // __KEY_EVENT_H__

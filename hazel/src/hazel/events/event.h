@@ -16,6 +16,7 @@ enum class EventType {
   AppTick,
   AppUpdate,
   AppRender,
+  KeyTyped,
   KeyPressed,
   KeyReleased,
   MouseButtonPressed,
