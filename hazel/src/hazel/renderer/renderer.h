@@ -1,19 +1,18 @@
 #ifndef __RENDERER_H__
 #define __RENDERER_H__
 
-namespace hazel {
+#include "hazel/renderer/render_command.h"
+#include "hazel/renderer/renderer_api.h"
 
-enum class RendererAPI {
-  None = 0,
-  OpenGL = 1,
-};
+namespace hazel {
 
 class Renderer {
  public:
-  inline static RendererAPI GetAPI() { return s_rendererAPI; }
+  static void BeginScene();
+  static void EndScene();
 
- private:
-  static RendererAPI s_rendererAPI;
+  static void Submit(const std::shared_ptr<VertexArray>& vertexArray);
+  inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 };
 
 }  // namespace hazel

@@ -4,6 +4,7 @@
 
 #include "hazel/events/application_event.h"
 #include "hazel/input.h"
+#include "hazel/renderer/renderer.h"
 #include "log.h"
 
 namespace hazel {
@@ -139,18 +140,17 @@ void Application::PushOverlay(Layer* layer) { _layerStack.PushOverlay(layer); }
 
 void Application::Run() {
   while (_running) {
-    glClearColor(0.1f, 0.1f, 0.1f, 1);
-    glClear(GL_COLOR_BUFFER_BIT);
+    RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
+    RenderCommand::Clear();
+
+    Renderer::BeginScene();
 
     _blueShader->Bind();
-    _squareVA->Bind();
-    glDrawElements(GL_TRIANGLES, _squareVA->GetIndexBuffer()->GetCount(),
-                   GL_UNSIGNED_INT, nullptr);
-
+    Renderer::Submit(_squareVA);
     _shader->Bind();
-    _vertexArray->Bind();
-    glDrawElements(GL_TRIANGLES, _vertexArray->GetIndexBuffer()->GetCount(),
-                   GL_UNSIGNED_INT, nullptr);
+    Renderer::Submit(_vertexArray);
+
+    Renderer::EndScene();
 
     for (Layer* layer : _layerStack) {
       layer->OnUpdate();
