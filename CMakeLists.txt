@@ -33,6 +33,9 @@ list(APPEND LIBS glfw ${GLFW_LIBRARIES})
 # Imgui
 include_directories(hazel/vendor/imgui)
 
+# glm
+include_directories(hazel/vendor/glm)
+
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DHZ_DEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DHZ_DEBUG")
 include_directories(hazel/src)
