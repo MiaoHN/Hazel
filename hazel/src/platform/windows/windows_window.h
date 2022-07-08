@@ -6,6 +6,7 @@
 #include <GLFW/glfw3.h>
 // clang-format on
 
+#include "hazel/renderer/graphics_context.h"
 #include "hazel/window.h"
 
 namespace hazel {
@@ -35,6 +36,7 @@ class WindowsWindow : public Window {
 
  private:
   GLFWwindow* _window;
+  GraphicsContext* _context;
 
   struct WindowData {
     std::string title;
