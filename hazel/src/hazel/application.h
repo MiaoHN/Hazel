@@ -7,6 +7,7 @@
 #include "hazel/layer_stack.h"
 #include "hazel/renderer/buffer.h"
 #include "hazel/renderer/shader.h"
+#include "hazel/renderer/vertex_array.h"
 #include "hazel/window.h"
 #include "hzpch.h"
 
@@ -37,10 +38,11 @@ class HAZEL_API Application {
   bool _running = true;
   LayerStack _layerStack;
 
-  unsigned int _vertexArray;
-  std::unique_ptr<Shader> _shader;
-  std::unique_ptr<VertexBuffer> _vertexBuffer;
-  std::unique_ptr<IndexBuffer> _indexBuffer;
+  std::shared_ptr<Shader> _shader;
+  std::shared_ptr<VertexArray> _vertexArray;
+
+  std::shared_ptr<Shader> _blueShader;
+  std::shared_ptr<VertexArray> _squareVA;
 
  private:
   static Application* s_instance;
