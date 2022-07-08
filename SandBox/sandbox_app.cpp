@@ -4,10 +4,19 @@ class ExampleLayer : public hazel::Layer {
  public:
   ExampleLayer() : Layer("Example") {}
 
-  void OnUpdate() override { HZ_INFO("ExampleLayer::Update"); }
+  void OnUpdate() override {
+    if (hazel::Input::IsKeyPressed(HZ_KEY_TAB)) {
+      HZ_INFO("Tab key is pressed! (poll)");
+    }
+  }
 
   void OnEvent(hazel::Event& event) override {
-    HZ_TRACE("{0}", event.ToString());
+    if (event.GetEventType() == hazel::EventType::KeyPressed) {
+      hazel::KeyPressedEvent& e = (hazel::KeyPressedEvent&)event;
+      if (e.GetKeyCode() == HZ_KEY_TAB) {
+        HZ_INFO("Tab key is pressed! (event");
+      }
+    }
   }
 };
 
