@@ -13,8 +13,12 @@ class OpenGLVertexBuffer : public VertexBuffer {
   void Bind() const override;
   void UnBind() const override;
 
+  const BufferLayout& GetLayout() const override { return _layout; }
+  void SetLayout(const BufferLayout& layout) override { _layout = layout; }
+
  private:
   unsigned int _id;
+  BufferLayout _layout;
 };
 
 class OpenGLIndexBuffer : public IndexBuffer {
