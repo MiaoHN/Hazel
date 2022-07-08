@@ -24,19 +24,21 @@ void LayerStack::PushOverlay(Layer* overlay) {
 }
 
 void LayerStack::PopLayer(Layer* layer) {
-  auto it = std::find(_layers.begin(), _layers.end(), layer);
+  auto it =
+      std::find(_layers.begin(), _layers.begin() + _layerInsertIndex, layer);
   if (it != _layers.end()) {
+    layer->OnDetach();
     _layers.erase(it);
     _layerInsertIndex--;
-    layer->OnDetach();
   }
 }
 
 void LayerStack::PopOverlay(Layer* overlay) {
-  auto it = std::find(_layers.begin(), _layers.end(), overlay);
+  auto it =
+      std::find(_layers.begin() + _layerInsertIndex, _layers.end(), overlay);
   if (it != _layers.end()) {
-    _layers.erase(it);
     overlay->OnDetach();
+    _layers.erase(it);
   }
 }
 
