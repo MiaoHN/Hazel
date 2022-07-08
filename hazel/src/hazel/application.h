@@ -35,6 +35,8 @@ class HAZEL_API Application {
   bool _running = true;
   LayerStack _layerStack;
 
+  unsigned int _vertexArray, _vertexBuffer, _indexBuffer;
+
  private:
   static Application* s_instance;
 };
