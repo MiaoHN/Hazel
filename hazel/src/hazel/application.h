@@ -5,6 +5,7 @@
 #include "hazel/events/application_event.h"
 #include "hazel/imgui/imgui_layer.h"
 #include "hazel/layer_stack.h"
+#include "hazel/renderer/buffer.h"
 #include "hazel/renderer/shader.h"
 #include "hazel/window.h"
 #include "hzpch.h"
@@ -36,8 +37,10 @@ class HAZEL_API Application {
   bool _running = true;
   LayerStack _layerStack;
 
-  unsigned int _vertexArray, _vertexBuffer, _indexBuffer;
+  unsigned int _vertexArray;
   std::unique_ptr<Shader> _shader;
+  std::unique_ptr<VertexBuffer> _vertexBuffer;
+  std::unique_ptr<IndexBuffer> _indexBuffer;
 
  private:
   static Application* s_instance;
