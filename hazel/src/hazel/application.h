@@ -3,6 +3,7 @@
 
 #include "hazel/core.h"
 #include "hazel/events/application_event.h"
+#include "hazel/imgui/imgui_layer.h"
 #include "hazel/layer_stack.h"
 #include "hazel/window.h"
 #include "hzpch.h"
@@ -30,6 +31,7 @@ class HAZEL_API Application {
 
  private:
   std::unique_ptr<Window> _window;
+  ImGuiLayer* _imguiLayer;
   bool _running = true;
   LayerStack _layerStack;
 
