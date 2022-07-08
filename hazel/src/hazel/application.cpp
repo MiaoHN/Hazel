@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 
 #include "hazel/events/application_event.h"
+#include "hazel/input.h"
 #include "log.h"
 
 namespace hazel {
@@ -51,6 +52,9 @@ void Application::Run() {
     for (Layer* layer : _layerStack) {
       layer->OnUpdate();
     }
+
+    auto pos = Input::GetMousePosition();
+    HZ_CORE_TRACE("{0}, {1}", std::get<0>(pos), std::get<1>(pos));
     _window->OnUpdate();
   }
 }

@@ -27,6 +27,8 @@ class WindowsWindow : public Window {
   void SetVSync(bool enabled) override;
   bool IsVSync() const override;
 
+  inline void* GetNativeWindow() const override { return _window; }
+
  private:
   virtual void Init(const WindowProps& props);
   virtual void Shutdown();
