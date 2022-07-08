@@ -45,6 +45,7 @@ file(
   HZ_SRC
   "hazel/src/hazel/*.cpp"
   "hazel/src/hazel/imgui/*.cpp"
+  "hazel/src/hazel/renderer/*.cpp"
   "hazel/src/platform/windows/*.cpp"
   "hazel/src/platform/opengl/*.cpp"
   "hazel/vendor/imgui/*.cpp")

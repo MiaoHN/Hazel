@@ -5,6 +5,7 @@
 #include "hazel/events/application_event.h"
 #include "hazel/imgui/imgui_layer.h"
 #include "hazel/layer_stack.h"
+#include "hazel/renderer/shader.h"
 #include "hazel/window.h"
 #include "hzpch.h"
 
@@ -36,6 +37,7 @@ class HAZEL_API Application {
   LayerStack _layerStack;
 
   unsigned int _vertexArray, _vertexBuffer, _indexBuffer;
+  std::unique_ptr<Shader> _shader;
 
  private:
   static Application* s_instance;
