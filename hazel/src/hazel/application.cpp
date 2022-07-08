@@ -39,12 +39,10 @@ void Application::OnEvent(Event& e) {
 
 void Application::PushLayer(Layer* layer) {
   _layerStack.PushLayer(layer);
-  layer->OnAttach();
 }
 
 void Application::PushOverlay(Layer* layer) {
   _layerStack.PushOverlay(layer);
-  layer->OnAttach();
 }
 
 void Application::Run() {

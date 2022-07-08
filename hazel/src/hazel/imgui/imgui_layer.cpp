@@ -70,7 +70,7 @@ void ImGuiLayer::End() {
   ImGuiIO& io = ImGui::GetIO();
   Application& app = Application::Get();
   io.DisplaySize =
-      ImVec2(app.GetWindow().GetWidth(), app.GetWindow().GetHeight());
+      ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());
   // Rendering
   ImGui::Render();
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
