@@ -2,6 +2,7 @@
 #define __APPLICATION_H__
 
 #include "hazel/core.h"
+#include "hazel/core/time_step.h"
 #include "hazel/events/application_event.h"
 #include "hazel/imgui/imgui_layer.h"
 #include "hazel/layer_stack.h"
@@ -34,6 +35,8 @@ class Application {
   ImGuiLayer* _imguiLayer;
   bool _running = true;
   LayerStack _layerStack;
+
+  float _lastFrameTime = 0.0f;
 
  private:
   static Application* s_instance;

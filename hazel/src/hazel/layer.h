@@ -2,6 +2,7 @@
 #define __LAYER_H__
 
 #include "hazel/core.h"
+#include "hazel/core/time_step.h"
 #include "hazel/events/event.h"
 
 namespace hazel {
@@ -13,7 +14,7 @@ class HAZEL_API Layer {
 
   virtual void OnAttach() {}
   virtual void OnDetach() {}
-  virtual void OnUpdate() {}
+  virtual void OnUpdate(Timestep ts) {}
   virtual void OnImGuiRender() {}
   virtual void OnEvent(Event& event) {}
 

@@ -111,23 +111,23 @@ class ExampleLayer : public hazel::Layer {
         new hazel::Shader(blueShaderVertexSrc, blueShaderFragmentSrc));
   }
 
-  void OnUpdate() override {
+  void OnUpdate(hazel::Timestep ts) override {
     if (hazel::Input::IsKeyPressed(HZ_KEY_A)) {
-      _cameraPosition.x += _cameraMoveSpeed;
+      _cameraPosition.x += _cameraMoveSpeed * ts;
     } else if (hazel::Input::IsKeyPressed(HZ_KEY_D)) {
-      _cameraPosition.x -= _cameraMoveSpeed;
+      _cameraPosition.x -= _cameraMoveSpeed * ts;
     }
 
     if (hazel::Input::IsKeyPressed(HZ_KEY_W)) {
-      _cameraPosition.y -= _cameraMoveSpeed;
+      _cameraPosition.y -= _cameraMoveSpeed * ts;
     } else if (hazel::Input::IsKeyPressed(HZ_KEY_S)) {
-      _cameraPosition.y += _cameraMoveSpeed;
+      _cameraPosition.y += _cameraMoveSpeed * ts;
     }
 
     if (hazel::Input::IsKeyPressed(HZ_KEY_Q)) {
-      _cameraRotation += _cameraRotationSpeed;
+      _cameraRotation += _cameraRotationSpeed * ts;
     } else if (hazel::Input::IsKeyPressed(HZ_KEY_E)) {
-      _cameraRotation -= _cameraRotationSpeed;
+      _cameraRotation -= _cameraRotationSpeed * ts;
     }
 
     hazel::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
@@ -158,9 +158,10 @@ class ExampleLayer : public hazel::Layer {
   hazel::OrthoGraphicCamera _camera;
   glm::vec3 _cameraPosition;
 
-  float _cameraMoveSpeed = 0.1f;
+  float _cameraMoveSpeed = 5.0f;
+
   float _cameraRotation = 0.0f;
-  float _cameraRotationSpeed = 2.0f;
+  float _cameraRotationSpeed = 180.0f;
 };
 
 class Sandbox : public hazel::Application {

@@ -1,6 +1,9 @@
 #include "application.h"
 
+// clang-format off
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
+// clang-format on
 
 #include "hazel/events/application_event.h"
 #include "hazel/input.h"
@@ -43,8 +46,11 @@ void Application::PushOverlay(Layer* layer) { _layerStack.PushOverlay(layer); }
 
 void Application::Run() {
   while (_running) {
+    float time = (float)glfwGetTime();
+    Timestep timestep = time - _lastFrameTime;
+    _lastFrameTime = time;
     for (Layer* layer : _layerStack) {
-      layer->OnUpdate();
+      layer->OnUpdate(timestep);
     }
 
     _imguiLayer->Begin();
