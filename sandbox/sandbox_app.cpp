@@ -133,9 +133,9 @@ class ExampleLayer : public hazel::Layer {
     }
 
     if (hazel::Input::IsKeyPressed(HZ_KEY_Q)) {
-      _cameraRotation += _cameraRotationSpeed * ts;
-    } else if (hazel::Input::IsKeyPressed(HZ_KEY_E)) {
       _cameraRotation -= _cameraRotationSpeed * ts;
+    } else if (hazel::Input::IsKeyPressed(HZ_KEY_E)) {
+      _cameraRotation += _cameraRotationSpeed * ts;
     }
 
     hazel::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
