@@ -1,5 +1,7 @@
 #include <hazel.h>
 
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "imgui.h"
 
 class ExampleLayer : public hazel::Layer {
@@ -32,10 +34,10 @@ class ExampleLayer : public hazel::Layer {
     _squareVA.reset(hazel::VertexArray::Create());
 
     float squareVertices[3 * 4] = {
-        -0.75f, -0.75f, 0.0f,  //
-        0.75f,  -0.75f, 0.0f,  //
-        0.75f,  0.75f,  0.0f,  //
-        -0.75f, 0.75f,  0.0f   //
+        -0.5f, -0.5f, 0.0f,  //
+        0.5f,  -0.5f, 0.0f,  //
+        0.5f,  0.5f,  0.0f,  //
+        -0.5f, 0.5f,  0.0f   //
     };
 
     std::shared_ptr<hazel::VertexBuffer> squareVB;
@@ -59,11 +61,12 @@ class ExampleLayer : public hazel::Layer {
     out vec4 v_Color;
 
     uniform mat4 u_vp;
+    uniform mat4 u_transform;
 
 		void main() {
 		  v_Position = a_Position;
       v_Color = a_Color;
-		  gl_Position = u_vp * vec4(a_Position, 1.0);	
+		  gl_Position = u_vp * u_transform * vec4(a_Position, 1.0);	
 		}
   )";
 
@@ -89,10 +92,11 @@ class ExampleLayer : public hazel::Layer {
 			out vec3 v_Position;
 
       uniform mat4 u_vp;
+      uniform mat4 u_transform;
 
 			void main() {
 				v_Position = a_Position;
-				gl_Position = u_vp * vec4(a_Position, 1.0);	
+				gl_Position = u_vp * u_transform * vec4(a_Position, 1.0);	
 			}
 		)";
 
@@ -113,15 +117,15 @@ class ExampleLayer : public hazel::Layer {
 
   void OnUpdate(hazel::Timestep ts) override {
     if (hazel::Input::IsKeyPressed(HZ_KEY_A)) {
-      _cameraPosition.x += _cameraMoveSpeed * ts;
-    } else if (hazel::Input::IsKeyPressed(HZ_KEY_D)) {
       _cameraPosition.x -= _cameraMoveSpeed * ts;
+    } else if (hazel::Input::IsKeyPressed(HZ_KEY_D)) {
+      _cameraPosition.x += _cameraMoveSpeed * ts;
     }
 
     if (hazel::Input::IsKeyPressed(HZ_KEY_W)) {
-      _cameraPosition.y -= _cameraMoveSpeed * ts;
-    } else if (hazel::Input::IsKeyPressed(HZ_KEY_S)) {
       _cameraPosition.y += _cameraMoveSpeed * ts;
+    } else if (hazel::Input::IsKeyPressed(HZ_KEY_S)) {
+      _cameraPosition.y -= _cameraMoveSpeed * ts;
     }
 
     if (hazel::Input::IsKeyPressed(HZ_KEY_Q)) {
@@ -138,7 +142,16 @@ class ExampleLayer : public hazel::Layer {
 
     hazel::Renderer::BeginScene(_camera);
 
-    hazel::Renderer::Submit(_blueShader, _squareVA);
+    glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+
+    for (int y = 0; y < 20; y++) {
+      for (int x = 0; x < 20; x++) {
+        glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
+        glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
+        hazel::Renderer::Submit(_blueShader, _squareVA, transform);
+      }
+    }
+
     hazel::Renderer::Submit(_shader, _vertexArray);
 
     hazel::Renderer::EndScene();
