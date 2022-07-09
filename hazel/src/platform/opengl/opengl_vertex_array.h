@@ -27,6 +27,7 @@ class OpenGLVertexArray : public VertexArray {
 
  private:
   unsigned int _id;
+  unsigned int _vertexBufferIndexOffset = 0;
   std::vector<std::shared_ptr<VertexBuffer>> _vertexBuffers;
   std::shared_ptr<IndexBuffer> _indexBuffer;
 };

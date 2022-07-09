@@ -26,7 +26,7 @@ void LayerStack::PushOverlay(Layer* overlay) {
 void LayerStack::PopLayer(Layer* layer) {
   auto it =
       std::find(_layers.begin(), _layers.begin() + _layerInsertIndex, layer);
-  if (it != _layers.end()) {
+  if (it != _layers.begin() + _layerInsertIndex) {
     layer->OnDetach();
     _layers.erase(it);
     _layerInsertIndex--;
