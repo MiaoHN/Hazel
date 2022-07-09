@@ -2,6 +2,8 @@
 
 #include <glad/glad.h>
 
+#include <glm/gtc/type_ptr.hpp>
+
 #include "hazel/log.h"
 #include "hzpch.h"
 
@@ -90,5 +92,11 @@ Shader::~Shader() { glDeleteProgram(_id); }
 void Shader::Bind() const { glUseProgram(_id); }
 
 void Shader::UnBind() const { glUseProgram(0); }
+
+void Shader::UploadUniformMat4(const std::string& name,
+                               const glm::mat4& matrix) {
+  int location = glGetUniformLocation(_id, name.c_str());
+  glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+}
 
 }  // namespace hazel
