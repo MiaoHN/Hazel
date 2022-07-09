@@ -5,6 +5,7 @@
 #include <functional>
 #include <iostream>
 #include <memory>
+#include <unordered_map>
 #include <sstream>
 #include <string>
 #include <utility>

@@ -4,11 +4,13 @@
 #include <glm/glm.hpp>
 
 #include "hazel/renderer/shader.h"
+#include "hzpch.h"
 
 namespace hazel {
 
 class OpenGLShader : public Shader {
  public:
+  OpenGLShader(const std::string& filepath);
   OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc);
   ~OpenGLShader();
 
@@ -24,6 +26,13 @@ class OpenGLShader : public Shader {
 
   void UploadUniformMat3(const std::string& name, const glm::mat3& matrix);
   void UploadUniformMat4(const std::string& name, const glm::mat4& matrix);
+
+ private:
+  std::string ReadFile(const std::string& filepath);
+  std::unordered_map<unsigned int, std::string> PreProcess(
+      const std::string& source);
+  void Compile(
+      const std::unordered_map<unsigned int, std::string>& shaderSources);
 
  private:
   unsigned int _id;
