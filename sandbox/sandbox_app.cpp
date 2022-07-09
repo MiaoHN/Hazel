@@ -152,6 +152,8 @@ class ExampleLayer : public hazel::Layer {
                                                textureShaderFragmentSrc));
 
     _texture = hazel::Texture2D::Create("assets/textures/checker_board.png");
+    _chernoLogoTexture =
+        hazel::Texture2D::Create("assets/textures/cherno_logo.png");
 
     std::dynamic_pointer_cast<hazel::OpenGLShader>(_textureShader)->Bind();
     std::dynamic_pointer_cast<hazel::OpenGLShader>(_textureShader)
@@ -202,6 +204,9 @@ class ExampleLayer : public hazel::Layer {
     _texture->Bind();
     hazel::Renderer::Submit(_textureShader, _squareVA,
                             glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+    _chernoLogoTexture->Bind();
+    hazel::Renderer::Submit(_textureShader, _squareVA,
+                            glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
     // hazel::Renderer::Submit(_shader, _vertexArray);
 
@@ -223,7 +228,7 @@ class ExampleLayer : public hazel::Layer {
   hazel::Ref<hazel::Shader> _flatColorShader, _textureShader;
   hazel::Ref<hazel::VertexArray> _squareVA;
 
-  hazel::Ref<hazel::Texture2D> _texture;
+  hazel::Ref<hazel::Texture2D> _texture, _chernoLogoTexture;
 
   hazel::OrthoGraphicCamera _camera;
   glm::vec3 _cameraPosition;

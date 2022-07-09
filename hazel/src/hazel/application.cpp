@@ -7,6 +7,7 @@
 
 #include "hazel/events/application_event.h"
 #include "hazel/input.h"
+#include "hazel/renderer/renderer.h"
 #include "log.h"
 
 namespace hazel {
@@ -21,6 +22,8 @@ Application::Application() {
 
   _window = std::unique_ptr<Window>(Window::Create());
   _window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+
+  Renderer::Init();
 
   _imguiLayer = new ImGuiLayer();
   PushOverlay(_imguiLayer);
