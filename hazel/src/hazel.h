@@ -18,6 +18,7 @@
 #include "hazel/renderer/render_command.h"
 #include "hazel/renderer/renderer.h"
 #include "hazel/renderer/shader.h"
+#include "hazel/renderer/texture.h"
 #include "hazel/renderer/vertex_array.h"
 // -----
 

@@ -40,6 +40,9 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DHZ_DEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DHZ_DEBUG")
 include_directories(hazel/src)
 
+# stb_image
+include_directories(hazel/vendor/stb_image)
+
 file(
   GLOB
   HZ_SRC
@@ -48,7 +51,8 @@ file(
   "hazel/src/hazel/renderer/*.cpp"
   "hazel/src/platform/windows/*.cpp"
   "hazel/src/platform/opengl/*.cpp"
-  "hazel/vendor/imgui/*.cpp")
+  "hazel/vendor/imgui/*.cpp"
+  "hazel/vendor/stb_image/*.cpp")
 add_library(hazel STATIC ${HZ_SRC} ${GLAD_SRC})
 target_link_libraries(hazel PUBLIC ${LIBS} Opengl32)
 
