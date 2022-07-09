@@ -1,8 +1,10 @@
 #include <hazel.h>
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "imgui.h"
+#include "platform/opengl/opengl_shader.h"
 
 class ExampleLayer : public hazel::Layer {
  public:
@@ -83,9 +85,9 @@ class ExampleLayer : public hazel::Layer {
 		}
 	)";
 
-    _shader.reset(new hazel::Shader(vertexSrc, fragmentSrc));
+    _shader.reset(hazel::Shader::Create(vertexSrc, fragmentSrc));
 
-    std::string blueShaderVertexSrc = R"(
+    std::string flatColorShaderVertexSrc = R"(
 			#version 330 core
 			layout(location = 0) in vec3 a_Position;
 
@@ -100,19 +102,21 @@ class ExampleLayer : public hazel::Layer {
 			}
 		)";
 
-    std::string blueShaderFragmentSrc = R"(
+    std::string flatColorShaderFragmentSrc = R"(
 			#version 330 core
 			layout(location = 0) out vec4 color;
 
 			in vec3 v_Position;
 
+      uniform vec3 u_color;
+
 			void main() {
-				color = vec4(0.2, 0.3, 0.8, 1.0);
+        color = vec4(u_color, 1.0f);
 			}
 		)";
 
-    _blueShader.reset(
-        new hazel::Shader(blueShaderVertexSrc, blueShaderFragmentSrc));
+    _flatColorShader.reset(hazel::Shader::Create(flatColorShaderVertexSrc,
+                                                 flatColorShaderFragmentSrc));
   }
 
   void OnUpdate(hazel::Timestep ts) override {
@@ -144,11 +148,15 @@ class ExampleLayer : public hazel::Layer {
 
     glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
+    std::dynamic_pointer_cast<hazel::OpenGLShader>(_flatColorShader)->Bind();
+    std::dynamic_pointer_cast<hazel::OpenGLShader>(_flatColorShader)
+        ->UploadUniformFloat3("u_color", _squareColor);
+
     for (int y = 0; y < 20; y++) {
       for (int x = 0; x < 20; x++) {
         glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-        hazel::Renderer::Submit(_blueShader, _squareVA, transform);
+        hazel::Renderer::Submit(_flatColorShader, _squareVA, transform);
       }
     }
 
@@ -157,7 +165,11 @@ class ExampleLayer : public hazel::Layer {
     hazel::Renderer::EndScene();
   }
 
-  void OnImGuiRender() override {}
+  void OnImGuiRender() override {
+    ImGui::Begin("Settings");
+    ImGui::ColorEdit3("Squire Color", glm::value_ptr(_squareColor));
+    ImGui::End();
+  }
 
   void OnEvent(hazel::Event& event) override {}
 
@@ -165,7 +177,7 @@ class ExampleLayer : public hazel::Layer {
   std::shared_ptr<hazel::Shader> _shader;
   std::shared_ptr<hazel::VertexArray> _vertexArray;
 
-  std::shared_ptr<hazel::Shader> _blueShader;
+  std::shared_ptr<hazel::Shader> _flatColorShader;
   std::shared_ptr<hazel::VertexArray> _squareVA;
 
   hazel::OrthoGraphicCamera _camera;
@@ -175,6 +187,8 @@ class ExampleLayer : public hazel::Layer {
 
   float _cameraRotation = 0.0f;
   float _cameraRotationSpeed = 180.0f;
+
+  glm::vec3 _squareColor = {0.2f, 0.3f, 0.8f};
 };
 
 class Sandbox : public hazel::Application {
