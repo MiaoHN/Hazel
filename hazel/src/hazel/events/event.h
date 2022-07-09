@@ -48,16 +48,14 @@ class HAZEL_API Event {
 };
 
 class EventDispatcher {
-  template <typename T>
-  using EventFn = std::function<bool(T&)>;
-
  public:
   EventDispatcher(Event& event) : _event(event) {}
 
-  template <typename T>
-  bool Dispatch(EventFn<T> func) {
+  // F will be deduced by the compiler
+  template <typename T, typename F>
+  bool Dispatch(const F& func) {
     if (_event.GetEventType() == T::GetStaticType()) {
-      _event.handled = func(*(T*)&_event);
+      _event.handled = func(static_cast<T&>(_event));
       return true;
     }
     return false;
