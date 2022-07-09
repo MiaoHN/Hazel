@@ -11,6 +11,15 @@
 #include "hazel/log.h"
 #include "hazel/mouse_button_code.h"
 
+// ----- Renderer
+#include "hazel/renderer/buffer.h"
+#include "hazel/renderer/orthographic_camera.h"
+#include "hazel/renderer/render_command.h"
+#include "hazel/renderer/renderer.h"
+#include "hazel/renderer/shader.h"
+#include "hazel/renderer/vertex_array.h"
+// -----
+
 // ----- Entry Point
 #include "hazel/entry_point.h"
 // -----

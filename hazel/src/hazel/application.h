@@ -5,16 +5,12 @@
 #include "hazel/events/application_event.h"
 #include "hazel/imgui/imgui_layer.h"
 #include "hazel/layer_stack.h"
-#include "hazel/renderer/buffer.h"
-#include "hazel/renderer/orthographic_camera.h"
-#include "hazel/renderer/shader.h"
-#include "hazel/renderer/vertex_array.h"
 #include "hazel/window.h"
 #include "hzpch.h"
 
 namespace hazel {
 
-class HAZEL_API Application {
+class Application {
  public:
   Application();
   virtual ~Application();
@@ -38,14 +34,6 @@ class HAZEL_API Application {
   ImGuiLayer* _imguiLayer;
   bool _running = true;
   LayerStack _layerStack;
-
-  std::shared_ptr<Shader> _shader;
-  std::shared_ptr<VertexArray> _vertexArray;
-
-  std::shared_ptr<Shader> _blueShader;
-  std::shared_ptr<VertexArray> _squareVA;
-
-  OrthoGraphicCamera _camera;
 
  private:
   static Application* s_instance;
