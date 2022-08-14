@@ -54,7 +54,7 @@ file(
   "hazel/vendor/imgui/*.cpp"
   "hazel/vendor/stb_image/*.cpp")
 add_library(hazel STATIC ${HZ_SRC} ${GLAD_SRC})
-target_link_libraries(hazel PUBLIC ${LIBS} Opengl32)
+target_link_libraries(hazel PUBLIC ${LIBS})
 
 # ##############################################################################
 # Sandbox
