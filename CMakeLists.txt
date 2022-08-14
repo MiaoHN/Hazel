@@ -19,6 +19,8 @@ include_directories(hazel/vendor/spdlog/include)
 set(GLAD_SRC hazel/vendor/glad/src/glad.c)
 if(NOT WIN32)
   list(APPEND LIBS dl)
+else()
+  list(APPEND LIBS Opengl32)
 endif(NOT WIN32)
 include_directories(hazel/vendor/glad/include)
 
@@ -62,3 +64,11 @@ target_link_libraries(hazel PUBLIC ${LIBS})
 
 add_executable(sandbox sandbox/sandbox_app.cpp)
 target_link_libraries(sandbox PUBLIC hazel ${LIBS})
+
+add_custom_command(TARGET sandbox
+  PRE_BUILD
+  COMMAND ${CMAKE_COMMAND}
+  -E copy_directory
+  ${PROJECT_SOURCE_DIR}/sandbox/assets
+  $<TARGET_FILE_DIR:sandbox>/assets
+)
