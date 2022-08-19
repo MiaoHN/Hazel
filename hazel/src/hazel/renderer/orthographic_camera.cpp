@@ -6,20 +6,25 @@
 
 namespace hazel {
 
-OrthoGraphicCamera::OrthoGraphicCamera(float left, float right, float bottom,
+OrthographicCamera::OrthographicCamera(float left, float right, float bottom,
                                        float top)
-    : _projection(glm::ortho(left, right, bottom, top, -1.0f, 1.0f)),
-      _view(1.0f) {
-  _vp = _projection * _view;
+    : projection_(glm::ortho(left, right, bottom, top, -1.0f, 1.0f)),
+      view_(1.0f) {
+  vp_ = projection_ * view_;
 }
 
-void OrthoGraphicCamera::RecalculateView() {
+void OrthographicCamera::RecalculateView() {
   glm::mat4 transform =
-      glm::translate(glm::mat4(1.0f), _position) *
-      glm::rotate(glm::mat4(1.0f), glm::radians(_rotation), glm::vec3(0, 0, 1));
+      glm::translate(glm::mat4(1.0f), position_) *
+      glm::rotate(glm::mat4(1.0f), glm::radians(rotation_), glm::vec3(0, 0, 1));
 
-  _view = glm::inverse(transform);
-  _vp = _projection * _view;
+  view_ = glm::inverse(transform);
+  vp_ = projection_ * view_;
+}
+void OrthographicCamera::SetProjection(float left, float right, float bottom,
+                                       float top) {
+  projection_ = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
+  vp_ = projection_ * view_;
 }
 
 }  // namespace hazel

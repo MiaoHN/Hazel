@@ -47,7 +47,7 @@
   }
 #define HZ_CORE_ASSERT(x, ...)                             \
   {                                                        \
-    if (!x) {                                              \
+    if (!(x)) {                                              \
       HZ_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); \
       raise(SIGTRAP);                                      \
     }                                                      \

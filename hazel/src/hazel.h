@@ -11,6 +11,7 @@
 #include "hazel/layer.h"
 #include "hazel/log.h"
 #include "hazel/mouse_button_code.h"
+#include "hazel/orthographic_camera_controller.h"
 
 // ----- Renderer
 #include "hazel/renderer/buffer.h"

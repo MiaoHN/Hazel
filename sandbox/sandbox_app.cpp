@@ -9,9 +9,7 @@
 class ExampleLayer : public hazel::Layer {
  public:
   ExampleLayer()
-      : Layer("Example"),
-        _camera(-1.6f, 1.6f, -0.9f, 0.9f),
-        _cameraPosition(0.0f) {
+      : Layer("Example"), cameraController_(1280.0f / 720.0f, false) {
     _vertexArray.reset(hazel::VertexArray::Create());
 
     float vertices[3 * 7] = {
@@ -86,7 +84,7 @@ class ExampleLayer : public hazel::Layer {
 		}
 	)";
 
-    _shader.reset(hazel::Shader::Create(vertexSrc, fragmentSrc));
+    _shader = hazel::Shader::Create("VertexPosColor", vertexSrc, fragmentSrc);
 
     std::string flatColorShaderVertexSrc = R"(
 			#version 330 core
@@ -116,45 +114,29 @@ class ExampleLayer : public hazel::Layer {
 			}
 		)";
 
-    _flatColorShader.reset(hazel::Shader::Create(flatColorShaderVertexSrc,
-                                                 flatColorShaderFragmentSrc));
-    _textureShader.reset(hazel::Shader::Create("assets/shaders/texture.glsl"));
+    _flatColorShader = hazel::Shader::Create(
+        "FlatColor", flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
+    auto textureShader =
+        shaderLibrary_.Load("Texture", "assets/shaders/texture.glsl");
 
     _texture = hazel::Texture2D::Create("assets/textures/checker_board.png");
     _chernoLogoTexture =
         hazel::Texture2D::Create("assets/textures/cherno_logo.png");
 
-    std::dynamic_pointer_cast<hazel::OpenGLShader>(_textureShader)->Bind();
-    std::dynamic_pointer_cast<hazel::OpenGLShader>(_textureShader)
+    std::dynamic_pointer_cast<hazel::OpenGLShader>(textureShader)->Bind();
+    std::dynamic_pointer_cast<hazel::OpenGLShader>(textureShader)
         ->UploadUniformInt("u_texture", 0);
   }
 
   void OnUpdate(hazel::Timestep ts) override {
-    if (hazel::Input::IsKeyPressed(HZ_KEY_A)) {
-      _cameraPosition.x -= _cameraMoveSpeed * ts;
-    } else if (hazel::Input::IsKeyPressed(HZ_KEY_D)) {
-      _cameraPosition.x += _cameraMoveSpeed * ts;
-    }
+    // Update
+    cameraController_.onUpdate(ts);
 
-    if (hazel::Input::IsKeyPressed(HZ_KEY_W)) {
-      _cameraPosition.y += _cameraMoveSpeed * ts;
-    } else if (hazel::Input::IsKeyPressed(HZ_KEY_S)) {
-      _cameraPosition.y -= _cameraMoveSpeed * ts;
-    }
-
-    if (hazel::Input::IsKeyPressed(HZ_KEY_Q)) {
-      _cameraRotation -= _cameraRotationSpeed * ts;
-    } else if (hazel::Input::IsKeyPressed(HZ_KEY_E)) {
-      _cameraRotation += _cameraRotationSpeed * ts;
-    }
-
+    // Render
     hazel::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
     hazel::RenderCommand::Clear();
 
-    _camera.SetPosition(_cameraPosition);
-    _camera.SetRotation(_cameraRotation);
-
-    hazel::Renderer::BeginScene(_camera);
+    hazel::Renderer::BeginScene(cameraController_.GetCamera());
 
     glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
@@ -170,11 +152,13 @@ class ExampleLayer : public hazel::Layer {
       }
     }
 
+    auto textureShader = shaderLibrary_.Get("Texture");
+
     _texture->Bind();
-    hazel::Renderer::Submit(_textureShader, _squareVA,
+    hazel::Renderer::Submit(textureShader, _squareVA,
                             glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
     _chernoLogoTexture->Bind();
-    hazel::Renderer::Submit(_textureShader, _squareVA,
+    hazel::Renderer::Submit(textureShader, _squareVA,
                             glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
     // hazel::Renderer::Submit(_shader, _vertexArray);
@@ -188,25 +172,21 @@ class ExampleLayer : public hazel::Layer {
     ImGui::End();
   }
 
-  void OnEvent(hazel::Event& event) override {}
+  void OnEvent(hazel::Event& event) override {
+    cameraController_.onEvent(event);
+  }
 
  private:
+  hazel::ShaderLibrary shaderLibrary_;
   hazel::Ref<hazel::Shader> _shader;
   hazel::Ref<hazel::VertexArray> _vertexArray;
 
-  hazel::Ref<hazel::Shader> _flatColorShader, _textureShader;
+  hazel::Ref<hazel::Shader> _flatColorShader;
   hazel::Ref<hazel::VertexArray> _squareVA;
 
   hazel::Ref<hazel::Texture2D> _texture, _chernoLogoTexture;
 
-  hazel::OrthoGraphicCamera _camera;
-  glm::vec3 _cameraPosition;
-
-  float _cameraMoveSpeed = 5.0f;
-
-  float _cameraRotation = 0.0f;
-  float _cameraRotationSpeed = 180.0f;
-
+  hazel::OrthographicCameraController cameraController_;
   glm::vec3 _squareColor = {0.2f, 0.3f, 0.8f};
 };
 
