@@ -1,5 +1,4 @@
-#ifndef __OPENGL_VERTEX_ARRAY_H__
-#define __OPENGL_VERTEX_ARRAY_H__
+#pragma once
 
 #include "hazel/renderer/vertex_array.h"
 
@@ -26,12 +25,11 @@ class OpenGLVertexArray : public VertexArray {
   }
 
  private:
-  unsigned int _id;
+  unsigned int id_;
   unsigned int _vertexBufferIndexOffset = 0;
+
   std::vector<std::shared_ptr<VertexBuffer>> _vertexBuffers;
-  std::shared_ptr<IndexBuffer> _indexBuffer;
+  std::shared_ptr<IndexBuffer>               _indexBuffer;
 };
 
 }  // namespace hazel
-
-#endif  // __OPENGL_VERTEX_ARRAY_H__

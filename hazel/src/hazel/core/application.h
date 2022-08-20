@@ -1,5 +1,4 @@
-#ifndef __APPLICATION_H__
-#define __APPLICATION_H__
+#pragma once
 
 #include "core.h"
 #include "hazel/core/time_step.h"
@@ -33,10 +32,11 @@ class Application {
 
  private:
   std::unique_ptr<Window> window_;
+
   ImGuiLayer* imguiLayer_;
-  bool running_ = true;
-  bool minimized_ = false;
-  LayerStack layerStack_;
+  bool        running_   = true;
+  bool        minimized_ = false;
+  LayerStack  layerStack_;
 
   float _lastFrameTime = 0.0f;
 
@@ -48,5 +48,3 @@ class Application {
 Application* CreateApplication();
 
 }  // namespace hazel
-
-#endif  // __APPLICATION_H__

@@ -1,5 +1,4 @@
-#ifndef __HZPCH_H__
-#define __HZPCH_H__
+#pragma once
 
 #include <algorithm>
 #include <array>
@@ -13,5 +12,3 @@
 #include <vector>
 
 #include "hazel/core/log.h"
-
-#endif  // __HZPCH_H__

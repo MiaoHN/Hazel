@@ -1,5 +1,4 @@
-#ifndef __RENDER_COMMAND_H__
-#define __RENDER_COMMAND_H__
+#pragma once
 
 #include "hazel/renderer/renderer_api.h"
 
@@ -30,5 +29,3 @@ class RenderCommand {
 };
 
 }  // namespace hazel
-
-#endif  // __RENDER_COMMAND_H__

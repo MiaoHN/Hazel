@@ -1,5 +1,4 @@
-#ifndef __CORE_H__
-#define __CORE_H__
+#pragma once
 
 #include <memory>
 #ifndef HZ_PLATFORM_WINDOWS
@@ -59,7 +58,7 @@
 #define HZ_CORE_ASSERT(x, ...)
 #endif
 
-#define BIT(x) (1 << x)
+#define BIT(x)               (1 << x)
 #define HZ_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
 
 namespace hazel {
@@ -79,5 +78,3 @@ constexpr Ref<T> CreateRef(Args&&... args) {
 }
 
 }  // namespace hazel
-
-#endif  // __CORE_H__

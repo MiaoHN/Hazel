@@ -14,26 +14,26 @@ class OrthographicCameraController {
   void onUpdate(Timestep ts);
   void onEvent(Event& e);
 
-  OrthographicCamera& GetCamera() { return camera_; }
+  OrthographicCamera&       GetCamera() { return camera_; }
   const OrthographicCamera& GetCamera() const { return camera_; }
 
   float GetZoomLevel() const { return zoomLevel_; }
-  void SetZoomLevel(float level) { zoomLevel_ = level; }
+  void  SetZoomLevel(float level) { zoomLevel_ = level; }
 
  private:
   bool onMouseScrolled(MouseScrolledEvent& e);
   bool onWindowResized(WindowResizeEvent& e);
 
  private:
-  float aspectRatio_;
-  float zoomLevel_ = 1.0f;
+  float              aspectRatio_;
+  float              zoomLevel_ = 1.0f;
   OrthographicCamera camera_;
 
   bool rotation_;
 
-  glm::vec3 cameraPosition_ = {0.0f, 0.0f, 0.0f};
-  float cameraRotation_ = 0.0f;
-  float cameraTranslationSpeed = 5.0f, cameraRotationSpeed = 180.0f;
+  glm::vec3 cameraPosition_        = {0.0f, 0.0f, 0.0f};
+  float     cameraRotation_        = 0.0f;
+  float     cameraTranslationSpeed = 5.0f, cameraRotationSpeed = 180.0f;
 };
 
 }  // namespace hazel

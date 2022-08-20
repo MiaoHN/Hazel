@@ -1,5 +1,4 @@
-#ifndef __LAYER_STACK_H__
-#define __LAYER_STACK_H__
+#pragma once
 
 #include <vector>
 
@@ -22,9 +21,7 @@ class HAZEL_API LayerStack {
 
  private:
   std::vector<Layer*> _layers;
-  unsigned int _layerInsertIndex = 0;
+  unsigned int        _layerInsertIndex = 0;
 };
 
 }  // namespace hazel
-
-#endif  // __LAYER_STACK_H__

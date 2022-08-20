@@ -1,5 +1,4 @@
-#ifndef __OPENGL_CONTEXT_H__
-#define __OPENGL_CONTEXT_H__
+#pragma once
 
 #include "hazel/renderer/graphics_context.h"
 
@@ -19,5 +18,3 @@ class OpenGLContext : public GraphicsContext {
 };
 
 }  // namespace hazel
-
-#endif  // __OPENGL_CONTEXT_H__

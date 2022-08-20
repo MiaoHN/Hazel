@@ -1,5 +1,4 @@
-#ifndef __MOUSE_EVENT_H__
-#define __MOUSE_EVENT_H__
+#pragma once
 
 #include "event.h"
 #include "hzpch.h"
@@ -94,5 +93,3 @@ class HAZEL_API MouseButtonReleasedEvent : public MouseButtonEvent {
 };
 
 }  // namespace hazel
-
-#endif  // __MOUSE_EVENT_H__

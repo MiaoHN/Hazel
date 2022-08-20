@@ -19,7 +19,7 @@ class ExampleLayer : public hazel::Layer {
 
     hazel::Ref<hazel::VertexBuffer> vertexBuffer;
     vertexBuffer = hazel::VertexBuffer::Create(vertices, sizeof(vertices));
-    hazel::BufferLayout layout = {{hazel::ShaderDataType::Float3, "a_Position"},
+    hazel::BufferLayout layout = {{hazel::ShaderDataType::Float3, "a_position"},
                                   {hazel::ShaderDataType::Float4, "a_Color"}};
     vertexBuffer->SetLayout(layout);
     _vertexArray->AddVertexBuffer(vertexBuffer);
@@ -42,8 +42,8 @@ class ExampleLayer : public hazel::Layer {
     hazel::Ref<hazel::VertexBuffer> squareVB;
     squareVB =
         hazel::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
-    squareVB->SetLayout({{hazel::ShaderDataType::Float3, "a_Position"},
-                         {hazel::ShaderDataType::Float2, "a_TexCoord"}});
+    squareVB->SetLayout({{hazel::ShaderDataType::Float3, "a_position"},
+                         {hazel::ShaderDataType::Float2, "a_texCoord"}});
     _squareVA->AddVertexBuffer(squareVB);
 
     uint32_t squareIndices[6] = {0, 1, 2, 2, 3, 0};
@@ -54,7 +54,7 @@ class ExampleLayer : public hazel::Layer {
 
     std::string vertexSrc = R"(
     #version 330 core
-		layout(location = 0) in vec3 a_Position;
+		layout(location = 0) in vec3 a_position;
 		layout(location = 1) in vec4 a_Color;
 
 		out vec3 v_Position;
@@ -64,9 +64,9 @@ class ExampleLayer : public hazel::Layer {
     uniform mat4 u_transform;
 
 		void main() {
-		  v_Position = a_Position;
+		  v_Position = a_position;
       v_Color = a_Color;
-		  gl_Position = u_vp * u_transform * vec4(a_Position, 1.0);	
+		  gl_Position = u_vp * u_transform * vec4(a_position, 1.0);	
 		}
   )";
 
@@ -87,7 +87,7 @@ class ExampleLayer : public hazel::Layer {
 
     std::string flatColorShaderVertexSrc = R"(
 			#version 330 core
-			layout(location = 0) in vec3 a_Position;
+			layout(location = 0) in vec3 a_position;
 
 			out vec3 v_Position;
 
@@ -95,8 +95,8 @@ class ExampleLayer : public hazel::Layer {
       uniform mat4 u_transform;
 
 			void main() {
-				v_Position = a_Position;
-				gl_Position = u_vp * u_transform * vec4(a_Position, 1.0);	
+				v_Position = a_position;
+				gl_Position = u_vp * u_transform * vec4(a_position, 1.0);	
 			}
 		)";
 

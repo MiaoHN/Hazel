@@ -3,13 +3,13 @@
 #type vertex
 #version 330 core
 
-layout(location = 0) in vec3 a_Position;
+layout(location = 0) in vec3 a_position;
 
 uniform mat4 u_vp;
 uniform mat4 u_transform;
 
 void main() {
-    gl_Position = u_vp * u_transform * vec4(a_Position, 1.0);
+    gl_Position = u_vp * u_transform * vec4(a_position, 1.0);
 }
 
 #type fragment
@@ -17,8 +17,8 @@ void main() {
 
 layout(location = 0) out vec4 color;
 
-uniform vec4 u_Color;
+uniform vec4 u_color;
 
 void main() {
-    color = u_Color;
+    color = u_color;
 }

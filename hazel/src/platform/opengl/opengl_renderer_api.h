@@ -1,5 +1,4 @@
-#ifndef __OPENGL_RENDERER_API_H__
-#define __OPENGL_RENDERER_API_H__
+#pragma once
 
 #include "hazel/renderer/renderer_api.h"
 #include "hazel/renderer/vertex_array.h"
@@ -19,5 +18,3 @@ class OpenGLRendererAPI : public RendererAPI {
 };
 
 }  // namespace hazel
-
-#endif  // __OPENGL_RENDERER_API_H__

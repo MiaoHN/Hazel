@@ -1,5 +1,4 @@
-#ifndef __LAYER_H__
-#define __LAYER_H__
+#pragma once
 
 #include "core.h"
 #include "hazel/core/time_step.h"
@@ -25,5 +24,3 @@ class HAZEL_API Layer {
 };
 
 }  // namespace hazel
-
-#endif  // __LAYER_H__

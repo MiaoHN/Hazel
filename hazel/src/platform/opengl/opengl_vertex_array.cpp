@@ -40,11 +40,11 @@ ShaderDataTypeToOpenGLBaseType(ShaderDataType type) {
   return 0;
 }
 
-OpenGLVertexArray::OpenGLVertexArray() { glCreateVertexArrays(1, &_id); }
+OpenGLVertexArray::OpenGLVertexArray() { glCreateVertexArrays(1, &id_); }
 
-OpenGLVertexArray::~OpenGLVertexArray() { glDeleteVertexArrays(1, &_id); }
+OpenGLVertexArray::~OpenGLVertexArray() { glDeleteVertexArrays(1, &id_); }
 
-void OpenGLVertexArray::Bind() const { glBindVertexArray(_id); }
+void OpenGLVertexArray::Bind() const { glBindVertexArray(id_); }
 
 void OpenGLVertexArray::UnBind() const { glBindVertexArray(0); }
 
@@ -53,11 +53,11 @@ void OpenGLVertexArray::AddVertexBuffer(
   HZ_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(),
                  "Vertex Buffer has no layout!");
 
-  glBindVertexArray(_id);
+  glBindVertexArray(id_);
   vertexBuffer->Bind();
 
-  unsigned int index = 0;
-  const auto& layout = vertexBuffer->GetLayout();
+  unsigned int index  = 0;
+  const auto&  layout = vertexBuffer->GetLayout();
   for (const auto& element : layout) {
     glEnableVertexAttribArray(_vertexBufferIndexOffset);
     glVertexAttribPointer(_vertexBufferIndexOffset, element.GetComponentCount(),
@@ -71,7 +71,7 @@ void OpenGLVertexArray::AddVertexBuffer(
 
 void OpenGLVertexArray::SetIndexBuffer(
     const std::shared_ptr<IndexBuffer>& indexBuffer) {
-  glBindVertexArray(_id);
+  glBindVertexArray(id_);
   indexBuffer->Bind();
 
   _indexBuffer = indexBuffer;

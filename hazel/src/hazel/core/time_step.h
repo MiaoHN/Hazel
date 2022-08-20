@@ -1,5 +1,4 @@
-#ifndef __TIME_STEM_H__
-#define __TIME_STEM_H__
+#pragma once
 
 namespace hazel {
 
@@ -17,5 +16,3 @@ class Timestep {
 };
 
 }  // namespace hazel
-
-#endif  // __TIME_STEM_H__

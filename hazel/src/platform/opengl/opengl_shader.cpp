@@ -19,17 +19,17 @@ static unsigned int ShaderTypeFromString(const std::string& type) {
 }
 
 OpenGLShader::OpenGLShader(const std::string& filepath) {
-  std::string source = ReadFile(filepath);
-  auto shaderSources = PreProcess(source);
+  std::string source        = ReadFile(filepath);
+  auto        shaderSources = PreProcess(source);
   Compile(shaderSources);
 
   // Extract name from file path
   auto lastSlash = filepath.find_last_of("/\\");
-  lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
-  auto lastDot = filepath.rfind('.');
-  auto count = lastDot == std::string::npos ? filepath.size() - lastSlash
-                                            : lastDot - lastSlash;
-  name_ = filepath.substr(lastSlash, count);
+  lastSlash      = lastSlash == std::string::npos ? 0 : lastSlash + 1;
+  auto lastDot   = filepath.rfind('.');
+  auto count     = lastDot == std::string::npos ? filepath.size() - lastSlash
+                                                : lastDot - lastSlash;
+  name_          = filepath.substr(lastSlash, count);
 }
 
 OpenGLShader::OpenGLShader(const std::string& name,
@@ -37,7 +37,7 @@ OpenGLShader::OpenGLShader(const std::string& name,
                            const std::string& fragmentSrc)
     : name_(name) {
   std::unordered_map<unsigned int, std::string> sources;
-  sources[GL_VERTEX_SHADER] = vertexSrc;
+  sources[GL_VERTEX_SHADER]   = vertexSrc;
   sources[GL_FRAGMENT_SHADER] = fragmentSrc;
   Compile(sources);
 
@@ -103,8 +103,8 @@ OpenGLShader::OpenGLShader(const std::string& name,
   // Vertex and fragment shaders are successfully compiled.
   // Now time to link them together into a program.
   // Get a program object.
-  _id = glCreateProgram();
-  unsigned int program = _id;
+  id_                  = glCreateProgram();
+  unsigned int program = id_;
 
   // Attach our shaders to our program
   glAttachShader(program, vertexShader);
@@ -140,10 +140,10 @@ OpenGLShader::OpenGLShader(const std::string& name,
   glDetachShader(program, fragmentShader);
 }
 
-OpenGLShader::~OpenGLShader() { glDeleteProgram(_id); }
+OpenGLShader::~OpenGLShader() { glDeleteProgram(id_); }
 
 std::string OpenGLShader::ReadFile(const std::string& filepath) {
-  std::string result;
+  std::string   result;
   std::ifstream in(filepath, std::ios::in | std::ios::binary);
   if (in) {
     in.seekg(0, std::ios::end);
@@ -161,14 +161,14 @@ std::unordered_map<unsigned int, std::string> OpenGLShader::PreProcess(
     const std::string& source) {
   std::unordered_map<unsigned int, std::string> shaderSources;
 
-  const char* typeToken = "#type";
-  size_t typeTokenLength = strlen(typeToken);
-  size_t pos = source.find(typeToken, 0);
+  const char* typeToken       = "#type";
+  size_t      typeTokenLength = strlen(typeToken);
+  size_t      pos             = source.find(typeToken, 0);
   while (pos != std::string::npos) {
     size_t eol = source.find_first_of('\n', pos);
     HZ_CORE_ASSERT(eol != std::string::npos, "Syntax error");
-    size_t begin = pos + typeTokenLength + 1;
-    std::string type = source.substr(begin, eol - begin);
+    size_t      begin = pos + typeTokenLength + 1;
+    std::string type  = source.substr(begin, eol - begin);
     HZ_CORE_ASSERT(ShaderTypeFromString(type), "Invalid shader type specified");
 
     size_t nextLinePos = source.find_first_not_of('\n', eol);
@@ -189,9 +189,9 @@ void OpenGLShader::Compile(
   HZ_CORE_ASSERT(shaderSources.size() <= 2,
                  "We only support 2 shaders for now");
   std::array<unsigned int, 2> glShaderIDs{};
-  int glShaderIDIndex = 0;
+  int                         glShaderIDIndex = 0;
   for (auto& kv : shaderSources) {
-    unsigned int type = kv.first;
+    unsigned int       type   = kv.first;
     const std::string& source = kv.second;
 
     GLuint shader = glCreateShader(type);
@@ -221,7 +221,7 @@ void OpenGLShader::Compile(
     glShaderIDs[glShaderIDIndex++] = shader;
   }
 
-  _id = program;
+  id_ = program;
 
   // Link our program
   glLinkProgram(program);
@@ -253,7 +253,7 @@ void OpenGLShader::Compile(
   }
 }
 
-void OpenGLShader::Bind() const { glUseProgram(_id); }
+void OpenGLShader::Bind() const { glUseProgram(id_); }
 
 void OpenGLShader::UnBind() const { glUseProgram(0); }
 
@@ -274,43 +274,43 @@ void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& value) {
 }
 
 void OpenGLShader::UploadUniformInt(const std::string& name, int value) const {
-  int location = glGetUniformLocation(_id, name.c_str());
+  int location = glGetUniformLocation(id_, name.c_str());
   glUniform1i(location, value);
 }
 
 void OpenGLShader::UploadUniformFloat(const std::string& name,
-                                      float value) const {
-  int location = glGetUniformLocation(_id, name.c_str());
+                                      float              value) const {
+  int location = glGetUniformLocation(id_, name.c_str());
   glUniform1f(location, value);
 }
 
 void OpenGLShader::UploadUniformFloat2(const std::string& name,
-                                       const glm::vec2& value) const {
-  int location = glGetUniformLocation(_id, name.c_str());
+                                       const glm::vec2&   value) const {
+  int location = glGetUniformLocation(id_, name.c_str());
   glUniform2f(location, value.x, value.y);
 }
 
 void OpenGLShader::UploadUniformFloat3(const std::string& name,
-                                       const glm::vec3& value) const {
-  int location = glGetUniformLocation(_id, name.c_str());
+                                       const glm::vec3&   value) const {
+  int location = glGetUniformLocation(id_, name.c_str());
   glUniform3f(location, value.x, value.y, value.z);
 }
 
 void OpenGLShader::UploadUniformFloat4(const std::string& name,
-                                       const glm::vec4& value) const {
-  int location = glGetUniformLocation(_id, name.c_str());
+                                       const glm::vec4&   value) const {
+  int location = glGetUniformLocation(id_, name.c_str());
   glUniform4f(location, value.x, value.y, value.z, value.w);
 }
 
 void OpenGLShader::UploadUniformMat3(const std::string& name,
-                                     const glm::mat3& matrix) const {
-  int location = glGetUniformLocation(_id, name.c_str());
+                                     const glm::mat3&   matrix) const {
+  int location = glGetUniformLocation(id_, name.c_str());
   glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
 void OpenGLShader::UploadUniformMat4(const std::string& name,
-                                     const glm::mat4& matrix) const {
-  int location = glGetUniformLocation(_id, name.c_str());
+                                     const glm::mat4&   matrix) const {
+  int location = glGetUniformLocation(id_, name.c_str());
   glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 

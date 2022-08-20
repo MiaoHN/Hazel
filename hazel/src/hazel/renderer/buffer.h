@@ -1,5 +1,4 @@
-#ifndef __BUFFER_H__
-#define __BUFFER_H__
+#pragma once
 
 #include "hazel/core/log.h"
 
@@ -51,11 +50,11 @@ static unsigned int ShaderDataTypeSize(ShaderDataType type) {
 }
 
 struct BufferElement {
-  std::string name;
+  std::string    name;
   ShaderDataType type;
-  unsigned int size;
-  size_t offset;
-  bool normalized;
+  unsigned int   size;
+  size_t         offset;
+  bool           normalized;
 
   BufferElement() = default;
 
@@ -106,7 +105,7 @@ class BufferLayout {
     CalculateOffsetsAndStride();
   }
 
-  inline unsigned int GetStride() const { return _stride; }
+  inline unsigned int                      GetStride() const { return _stride; }
   inline const std::vector<BufferElement>& GetElements() const {
     return _elements;
   }
@@ -123,7 +122,7 @@ class BufferLayout {
  private:
   void CalculateOffsetsAndStride() {
     size_t offset = 0;
-    _stride = 0;
+    _stride       = 0;
     for (auto& element : _elements) {
       element.offset = offset;
       offset += element.size;
@@ -133,18 +132,18 @@ class BufferLayout {
 
  private:
   std::vector<BufferElement> _elements;
-  unsigned int _stride = 0;
+  unsigned int               _stride = 0;
 };
 
 class VertexBuffer {
  public:
   virtual ~VertexBuffer() {}
 
-  virtual void Bind() const = 0;
+  virtual void Bind() const   = 0;
   virtual void UnBind() const = 0;
 
-  virtual const BufferLayout& GetLayout() const = 0;
-  virtual void SetLayout(const BufferLayout& layout) = 0;
+  virtual const BufferLayout& GetLayout() const                     = 0;
+  virtual void                SetLayout(const BufferLayout& layout) = 0;
 
   static Ref<VertexBuffer> Create(float* vertices, unsigned int size);
 };
@@ -153,7 +152,7 @@ class IndexBuffer {
  public:
   virtual ~IndexBuffer() {}
 
-  virtual void Bind() const = 0;
+  virtual void Bind() const   = 0;
   virtual void UnBind() const = 0;
 
   virtual unsigned int GetCount() const = 0;
@@ -162,5 +161,3 @@ class IndexBuffer {
 };
 
 }  // namespace hazel
-
-#endif  // __BUFFER_H__

@@ -1,5 +1,4 @@
-#ifndef __OPENGL_SHADER_H__
-#define __OPENGL_SHADER_H__
+#pragma once
 
 #include <glm/glm.hpp>
 
@@ -29,16 +28,16 @@ class OpenGLShader : public Shader {
 
   void UploadUniformFloat(const std::string& name, float value) const;
   void UploadUniformFloat2(const std::string& name,
-                           const glm::vec2& value) const;
+                           const glm::vec2&   value) const;
   void UploadUniformFloat3(const std::string& name,
-                           const glm::vec3& value) const;
+                           const glm::vec3&   value) const;
   void UploadUniformFloat4(const std::string& name,
-                           const glm::vec4& value) const;
+                           const glm::vec4&   value) const;
 
   void UploadUniformMat3(const std::string& name,
-                         const glm::mat3& matrix) const;
+                         const glm::mat3&   matrix) const;
   void UploadUniformMat4(const std::string& name,
-                         const glm::mat4& matrix) const;
+                         const glm::mat4&   matrix) const;
 
  private:
   std::string ReadFile(const std::string& filepath);
@@ -48,10 +47,8 @@ class OpenGLShader : public Shader {
       const std::unordered_map<unsigned int, std::string>& shaderSources);
 
  private:
-  unsigned int _id;
-  std::string name_;
+  unsigned int id_;
+  std::string  name_;
 };
 
 }  // namespace hazel
-
-#endif  // __OPENGL_SHADER_H__

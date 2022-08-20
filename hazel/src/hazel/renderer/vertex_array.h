@@ -1,5 +1,4 @@
-#ifndef __VERTEX_ARRAY_H__
-#define __VERTEX_ARRAY_H__
+#pragma once
 
 #include <memory>
 
@@ -11,7 +10,7 @@ class VertexArray {
  public:
   virtual ~VertexArray() {}
 
-  virtual void Bind() const = 0;
+  virtual void Bind() const   = 0;
   virtual void UnBind() const = 0;
 
   virtual void AddVertexBuffer(
@@ -20,12 +19,10 @@ class VertexArray {
       const std::shared_ptr<IndexBuffer>& indexBuffer) = 0;
 
   virtual const std::vector<std::shared_ptr<VertexBuffer>>& GetVertexBuffers()
-      const = 0;
+      const                                                          = 0;
   virtual const std::shared_ptr<IndexBuffer>& GetIndexBuffer() const = 0;
 
   static Ref<VertexArray> Create();
 };
 
 }  // namespace hazel
-
-#endif  // __VERTEX_ARRAY_H__

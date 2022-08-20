@@ -1,5 +1,4 @@
-#ifndef __EVENT_H__
-#define __EVENT_H__
+#pragma once
 
 #include "hazel/core/core.h"
 #include "hzpch.h"
@@ -26,25 +25,26 @@ enum class EventType {
 };
 
 enum EventCategory {
-  None = 0,
+  None                     = 0,
   EventCategoryApplication = BIT(0),
-  EventCategoryInput = BIT(1),
-  EventCategoryKeyboard = BIT(2),
-  EventCategoryMouse = BIT(3),
+  EventCategoryInput       = BIT(1),
+  EventCategoryKeyboard    = BIT(2),
+  EventCategoryMouse       = BIT(3),
   EventCategoryMouseButton = BIT(4),
 };
 
-#define EVENT_CLASS_TYPE(type)                                        \
-  static EventType GetStaticType() { return EventType::type; }        \
-  EventType GetEventType() const override { return GetStaticType(); } \
-  const char* GetName() const override { return #type; }
+#define EVENT_CLASS_TYPE(type)                                               \
+  static EventType GetStaticType() { return EventType::type; }               \
+  EventType        GetEventType() const override { return GetStaticType(); } \
+  const char*      GetName() const override { return #type; }
 
 class HAZEL_API Event {
  public:
   bool handled = false;
-  virtual EventType GetEventType() const = 0;
-  virtual const char* GetName() const = 0;
-  virtual int GetCategoryFlags() const = 0;
+
+  virtual EventType   GetEventType() const     = 0;
+  virtual const char* GetName() const          = 0;
+  virtual int         GetCategoryFlags() const = 0;
   virtual std::string ToString() const { return GetName(); }
 
   inline bool IsInCategory(EventCategory category) {
@@ -75,5 +75,3 @@ class EventDispatcher {
 inline std::ostream& operator<<(std::ostream& os, const hazel::Event& e) {
   return os << e.ToString();
 }
-
-#endif  // __EVENT_H__

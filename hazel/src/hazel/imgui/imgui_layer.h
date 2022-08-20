@@ -1,5 +1,4 @@
-#ifndef __IMGUI_LAYER_H__
-#define __IMGUI_LAYER_H__
+#pragma once
 
 #include "hazel/core/layer.h"
 #include "hazel/events/application_event.h"
@@ -25,5 +24,3 @@ class HAZEL_API ImGuiLayer : public Layer {
 };
 
 }  // namespace hazel
-
-#endif  // __IMGUI_LAYER_H__

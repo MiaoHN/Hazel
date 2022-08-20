@@ -1,5 +1,4 @@
-#ifndef __APPLICATION_EVENT_H__
-#define __APPLICATION_EVENT_H__
+#pragma once
 
 #include "hazel/core/core.h"
 #include "hazel/events/event.h"
@@ -66,5 +65,3 @@ class HAZEL_API AppRenderEvent : public Event {
 };
 
 }  // namespace hazel
-
-#endif  // __APPLICATION_EVENT_H__

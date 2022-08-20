@@ -1,5 +1,4 @@
-#ifndef __ENTRY_POINT_H__
-#define __ENTRY_POINT_H__
+#pragma once
 
 extern hazel::Application* hazel::CreateApplication();
 
@@ -11,5 +10,3 @@ int main(int argc, char** argv) {
   app->Run();
   delete app;
 }
-
-#endif  // __ENTRY_POINT_H__

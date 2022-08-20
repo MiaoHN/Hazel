@@ -19,12 +19,12 @@ void OrthographicCamera::RecalculateView() {
       glm::rotate(glm::mat4(1.0f), glm::radians(rotation_), glm::vec3(0, 0, 1));
 
   view_ = glm::inverse(transform);
-  vp_ = projection_ * view_;
+  vp_   = projection_ * view_;
 }
 void OrthographicCamera::SetProjection(float left, float right, float bottom,
                                        float top) {
   projection_ = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
-  vp_ = projection_ * view_;
+  vp_         = projection_ * view_;
 }
 
 }  // namespace hazel

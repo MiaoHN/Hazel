@@ -1,5 +1,4 @@
-#ifndef __OPENGL_BUFFER_H__
-#define __OPENGL_BUFFER_H__
+#pragma once
 
 #include "hazel/renderer/buffer.h"
 
@@ -17,7 +16,7 @@ class OpenGLVertexBuffer : public VertexBuffer {
   void SetLayout(const BufferLayout& layout) override { _layout = layout; }
 
  private:
-  unsigned int _id;
+  unsigned int id_;
   BufferLayout _layout;
 };
 
@@ -32,10 +31,8 @@ class OpenGLIndexBuffer : public IndexBuffer {
   virtual unsigned int GetCount() const { return _count; }
 
  private:
-  unsigned int _id;
+  unsigned int id_;
   unsigned int _count;
 };
 
 }  // namespace hazel
-
-#endif  // __OPENGL_BUFFER_H__

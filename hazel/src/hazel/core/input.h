@@ -1,5 +1,4 @@
-#ifndef __INPUT_H__
-#define __INPUT_H__
+#pragma once
 
 #include "core.h"
 #include "hzpch.h"
@@ -11,7 +10,7 @@ class HAZEL_API Input {
   Input() = default;
 
  public:
-  Input(const Input&) = delete;
+  Input(const Input&)            = delete;
   Input& operator=(const Input&) = delete;
 
   inline static bool IsKeyPressed(int keyCode) {
@@ -28,16 +27,15 @@ class HAZEL_API Input {
   inline static float GetMouseY() { return s_instance->GetMouseYImpl(); }
 
  protected:
-  virtual bool IsKeyPressedImpl(int keyCode) = 0;
-  virtual bool IsMouseButtonPressedImpl(int button) = 0;
+  virtual bool  IsKeyPressedImpl(int keyCode)        = 0;
+  virtual bool  IsMouseButtonPressedImpl(int button) = 0;
+  virtual float GetMouseXImpl()                      = 0;
+  virtual float GetMouseYImpl()                      = 0;
+
   virtual std::pair<float, float> GetMousePositionImpl() = 0;
-  virtual float GetMouseXImpl() = 0;
-  virtual float GetMouseYImpl() = 0;
 
  private:
   static Scope<Input> s_instance;
 };
 
 }  // namespace hazel
-
-#endif  // __INPUT_H__

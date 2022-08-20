@@ -1,5 +1,4 @@
-#ifndef __HAZEL_H__
-#define __HAZEL_H__
+#pragma once
 
 // For use by Hazel applications
 
@@ -22,6 +21,3 @@
 #include "hazel/renderer/shader.h"
 #include "hazel/renderer/texture.h"
 #include "hazel/renderer/vertex_array.h"
-// -----
-
-#endif  // __HAZEL_H__

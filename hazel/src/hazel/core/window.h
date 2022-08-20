@@ -1,5 +1,4 @@
-#ifndef __WINDOW_H__
-#define __WINDOW_H__
+#pragma once
 
 #include "hazel/core/core.h"
 #include "hazel/events/event.h"
@@ -8,7 +7,7 @@
 namespace hazel {
 
 struct WindowProps {
-  std::string title;
+  std::string  title;
   unsigned int width;
   unsigned int height;
 
@@ -26,13 +25,13 @@ class HAZEL_API Window {
 
   virtual void OnUpdate() = 0;
 
-  virtual unsigned int GetWidth() const = 0;
+  virtual unsigned int GetWidth() const  = 0;
   virtual unsigned int GetHeight() const = 0;
 
   // Window attributes
   virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
-  virtual void SetVSync(bool enabled) = 0;
-  virtual bool IsVSync() const = 0;
+  virtual void SetVSync(bool enabled)                            = 0;
+  virtual bool IsVSync() const                                   = 0;
 
   virtual void* GetNativeWindow() const = 0;
 
@@ -40,5 +39,3 @@ class HAZEL_API Window {
 };
 
 }  // namespace hazel
-
-#endif  // __WINDOW_H__

@@ -3,8 +3,8 @@
 #type vertex
 #version 330 core
 
-layout(location = 0) in vec3 a_Position;
-layout(location = 1) in vec2 a_TexCoord;
+layout(location = 0) in vec3 a_position;
+layout(location = 1) in vec2 a_texCoord;
 
 uniform mat4 u_vp;
 uniform mat4 u_transform;
@@ -13,8 +13,8 @@ out vec2 v_texCoord;
 
 void main()
 {
-	v_texCoord = a_TexCoord;
-	gl_Position = u_vp * u_transform * vec4(a_Position, 1.0);
+	v_texCoord = a_texCoord;
+	gl_Position = u_vp * u_transform * vec4(a_position, 1.0);
 }
 
 #type fragment
@@ -24,8 +24,9 @@ layout(location = 0) out vec4 color;
 
 in vec2 v_texCoord;
 
+uniform vec4 u_color;
 uniform sampler2D u_texture;
 
 void main() {
-	color = texture(u_texture, v_texCoord * 10.0f) * vec4(1.0, 0.8, 0.8, 1.0);
+	color = texture(u_texture, v_texCoord * 10.0f) * u_color;
 }
