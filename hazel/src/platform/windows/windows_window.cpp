@@ -1,4 +1,4 @@
-#include "windows_window.h"
+#include "platform/windows/windows_window.h"
 
 #include "hazel/core/log.h"
 #include "hazel/events/application_event.h"
@@ -15,8 +15,8 @@ static void GLFWErrorCallback(int error, const char* description) {
   HZ_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
 }
 
-Window* Window::Create(const WindowProps& props) {
-  return new WindowsWindow(props);
+Scope<Window> Window::Create(const WindowProps& props) {
+  return CreateScope<WindowsWindow>(props);
 }
 
 WindowsWindow::WindowsWindow(const WindowProps& props) { Init(props); }
@@ -24,15 +24,14 @@ WindowsWindow::WindowsWindow(const WindowProps& props) { Init(props); }
 WindowsWindow::~WindowsWindow() { Shutdown(); }
 
 void WindowsWindow::Init(const WindowProps& props) {
-  data_.title = props.title;
-  data_.width = props.width;
+  data_.title  = props.title;
+  data_.width  = props.width;
   data_.height = props.height;
 
   HZ_CORE_INFO("Creating window {0} ({1}, {2})", props.title, props.width,
                props.height);
 
   if (s_GLFWWindowCount == 0) {
-    HZ_CORE_INFO("Initializing GLFW");
     int success = glfwInit();
     HZ_CORE_ASSERT(success, "Could not initialize GLFW!");
 
@@ -43,7 +42,7 @@ void WindowsWindow::Init(const WindowProps& props) {
                              data_.title.c_str(), nullptr, nullptr);
   ++s_GLFWWindowCount;
 
-  context_ = CreateScope<OpenGLContext>(window_);
+  context_ = GraphicsContext::Create(window_);
   context_->Init();
 
   glfwSetWindowUserPointer(window_, &data_);
@@ -53,14 +52,14 @@ void WindowsWindow::Init(const WindowProps& props) {
   glfwSetWindowSizeCallback(
       window_, [](GLFWwindow* window, int width, int height) {
         WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-        data.width = width;
-        data.height = height;
+        data.width       = width;
+        data.height      = height;
 
         WindowResizeEvent event(width, height);
         data.eventCallback(event);
       });
   glfwSetWindowCloseCallback(window_, [](GLFWwindow* window) {
-    WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+    WindowData&      data = *(WindowData*)glfwGetWindowUserPointer(window);
     WindowCloseEvent event;
     data.eventCallback(event);
   });
@@ -87,7 +86,7 @@ void WindowsWindow::Init(const WindowProps& props) {
     }
   });
   glfwSetCharCallback(window_, [](GLFWwindow* window, unsigned int character) {
-    WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+    WindowData&   data = *(WindowData*)glfwGetWindowUserPointer(window);
     KeyTypedEvent event(character);
     data.eventCallback(event);
   });
@@ -115,7 +114,7 @@ void WindowsWindow::Init(const WindowProps& props) {
       });
   glfwSetCursorPosCallback(
       window_, [](GLFWwindow* window, double xPos, double yPos) {
-        WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+        WindowData&     data = *(WindowData*)glfwGetWindowUserPointer(window);
         MouseMovedEvent event((float)xPos, (float)yPos);
         data.eventCallback(event);
       });
@@ -123,8 +122,9 @@ void WindowsWindow::Init(const WindowProps& props) {
 
 void WindowsWindow::Shutdown() {
   glfwDestroyWindow(window_);
-  if (--s_GLFWWindowCount == 0) {
-    HZ_CORE_INFO("Terminating GLFW");
+  --s_GLFWWindowCount;
+
+  if (s_GLFWWindowCount == 0) {
     glfwTerminate();
   }
 }

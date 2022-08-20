@@ -1,18 +1,16 @@
-#include "application.h"
+#include "hazel/core/application.h"
 
 // clang-format off
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 // clang-format on
 
+#include "hazel/core/input.h"
+#include "hazel/core/log.h"
 #include "hazel/events/application_event.h"
 #include "hazel/renderer/renderer.h"
-#include "input.h"
-#include "log.h"
 
 namespace hazel {
-
-#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
 Application* Application::s_instance = nullptr;
 
@@ -20,8 +18,8 @@ Application::Application() {
   HZ_CORE_ASSERT(!s_instance, "Application already exists!");
   s_instance = this;
 
-  window_ = std::unique_ptr<Window>(Window::Create());
-  window_->SetEventCallback(BIND_EVENT_FN(OnEvent));
+  window_ = Window::Create();
+  window_->SetEventCallback(HZ_BIND_EVENT_FN(Application::OnEvent));
 
   Renderer::Init();
 
@@ -29,12 +27,14 @@ Application::Application() {
   PushOverlay(imguiLayer_);
 }
 
-Application::~Application() {}
+Application::~Application() { Renderer::Shutdown(); }
 
 void Application::OnEvent(Event& e) {
   EventDispatcher dispatcher(e);
-  dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-  dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
+  dispatcher.Dispatch<WindowCloseEvent>(
+      HZ_BIND_EVENT_FN(Application::OnWindowClose));
+  dispatcher.Dispatch<WindowResizeEvent>(
+      HZ_BIND_EVENT_FN(Application::OnWindowResize));
 
   for (auto it = layerStack_.end(); it != layerStack_.begin();) {
     (*--it)->OnEvent(e);
@@ -50,8 +50,8 @@ void Application::PushOverlay(Layer* layer) { layerStack_.PushOverlay(layer); }
 
 void Application::Run() {
   while (running_) {
-    auto time = static_cast<float>(glfwGetTime());
-    Timestep ts = time - _lastFrameTime;
+    auto     time  = static_cast<float>(glfwGetTime());
+    Timestep ts    = time - _lastFrameTime;
     _lastFrameTime = time;
 
     if (!minimized_) {

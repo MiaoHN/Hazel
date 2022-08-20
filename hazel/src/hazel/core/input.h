@@ -5,7 +5,7 @@
 
 namespace hazel {
 
-class HAZEL_API Input {
+class Input {
  protected:
   Input() = default;
 

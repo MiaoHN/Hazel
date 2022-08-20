@@ -38,7 +38,7 @@ enum EventCategory {
   EventType        GetEventType() const override { return GetStaticType(); } \
   const char*      GetName() const override { return #type; }
 
-class HAZEL_API Event {
+class Event {
  public:
   bool handled = false;
 

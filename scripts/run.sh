@@ -1,4 +1,4 @@
 #!/usr/bin/bash
 
-cd bin
+cd bin/debug
 ./sandbox

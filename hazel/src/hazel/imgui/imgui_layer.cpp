@@ -5,11 +5,11 @@
 #include <GLFW/glfw3.h>
 // clang-format ok
 
-#include "backends/imgui_impl_glfw.h"
-#include "backends/imgui_impl_opengl3.h"
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
 #include "hazel/core/application.h"
 #include "hzpch.h"
-#include "imgui.h"
+#include <imgui.h>
 
 namespace hazel {
 

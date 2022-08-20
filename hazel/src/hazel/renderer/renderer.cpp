@@ -1,8 +1,8 @@
 #include "hazel/renderer/renderer.h"
 
+#include "hazel/renderer/renderer_2d.h"
 #include "hzpch.h"
 #include "platform/opengl/opengl_shader.h"
-#include "renderer_2d.h"
 
 namespace hazel {
 
@@ -14,20 +14,20 @@ void Renderer::Init() {
   Renderer2D::Init();
 }
 
+void Renderer::Shutdown() { Renderer2D::Shutdown(); }
+
 void Renderer::BeginScene(OrthographicCamera& camera) {
   s_sceneData->vp = camera.GetVP();
 }
 
 void Renderer::EndScene() {}
 
-void Renderer::Submit(const std::shared_ptr<Shader>&      shader,
-                      const std::shared_ptr<VertexArray>& vertexArray,
-                      const glm::mat4&                    transform) {
+void Renderer::Submit(const Ref<Shader>&      shader,
+                      const Ref<VertexArray>& vertexArray,
+                      const glm::mat4&        transform) {
   shader->Bind();
-  std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4(
-      "u_vp", s_sceneData->vp);
-  std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4(
-      "u_transform", transform);
+  shader->SetMat4("u_vp", s_sceneData->vp);
+  shader->SetMat4("u_transform", transform);
 
   vertexArray->Bind();
   RenderCommand::DrawIndexed(vertexArray);

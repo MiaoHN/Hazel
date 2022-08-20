@@ -1,9 +1,9 @@
 #include "sandbox_2d.h"
 
+#include <imgui.h>
+
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
-#include "imgui.h"
 
 Sandbox2D::Sandbox2D()
     : Layer("Sandbox2D"), cameraController_(1280.0f / 720.0f) {}

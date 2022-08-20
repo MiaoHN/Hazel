@@ -1,26 +1,23 @@
-#ifndef __LOG_H__
-#define __LOG_H__
+#pragma once
 
-#include "core.h"
+#include "hazel/core/core.h"
 #include "hzpch.h"
 #include "spdlog/spdlog.h"
 
 namespace hazel {
 
-class HAZEL_API Log {
+class Log {
  public:
   static void Init();
 
-  inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() {
-    return s_coreLogger;
-  }
-  inline static std::shared_ptr<spdlog::logger>& GetClientLogger() {
+  inline static Ref<spdlog::logger>& GetCoreLogger() { return s_coreLogger; }
+  inline static Ref<spdlog::logger>& GetClientLogger() {
     return s_clientLogger;
   }
 
  private:
-  static std::shared_ptr<spdlog::logger> s_coreLogger;
-  static std::shared_ptr<spdlog::logger> s_clientLogger;
+  static Ref<spdlog::logger> s_coreLogger;
+  static Ref<spdlog::logger> s_clientLogger;
 };
 
 }  // namespace hazel
@@ -38,5 +35,3 @@ class HAZEL_API Log {
 #define HZ_WARN(...)  ::hazel::Log::GetClientLogger()->warn(__VA_ARGS__)
 #define HZ_ERROR(...) ::hazel::Log::GetClientLogger()->error(__VA_ARGS__)
 #define HZ_FATAL(...) ::hazel::Log::GetClientLogger()->critical(__VA_ARGS__)
-
-#endif  // __LOG_H__

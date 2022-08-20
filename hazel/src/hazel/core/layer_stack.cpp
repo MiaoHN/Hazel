@@ -1,10 +1,8 @@
-#include "layer_stack.h"
+#include "hazel/core/layer_stack.h"
 
 #include "hzpch.h"
 
 namespace hazel {
-
-LayerStack::LayerStack() {}
 
 LayerStack::~LayerStack() {
   for (Layer* layer : _layers) {

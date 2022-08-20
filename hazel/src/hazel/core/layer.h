@@ -1,12 +1,12 @@
 #pragma once
 
-#include "core.h"
+#include "hazel/core/core.h"
 #include "hazel/core/time_step.h"
 #include "hazel/events/event.h"
 
 namespace hazel {
 
-class HAZEL_API Layer {
+class Layer {
  public:
   Layer(const std::string& name = "Layer");
   virtual ~Layer();

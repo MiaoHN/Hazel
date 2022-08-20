@@ -1,4 +1,4 @@
-#include "opengl_texture.h"
+#include "platform/opengl/opengl_texture.h"
 
 #include <glad/glad.h>
 #include <stb_image.h>

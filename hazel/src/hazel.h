@@ -3,6 +3,7 @@
 // For use by Hazel applications
 
 #include "hazel/core/application.h"
+#include "hazel/core/core.h"
 #include "hazel/core/input.h"
 #include "hazel/core/key_code.h"
 #include "hazel/core/layer.h"

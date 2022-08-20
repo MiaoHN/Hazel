@@ -6,7 +6,7 @@
 
 namespace hazel {
 
-class HAZEL_API WindowResizeEvent : public Event {
+class WindowResizeEvent : public Event {
  public:
   WindowResizeEvent(unsigned int width, unsigned int height)
       : _width(width), _height(height) {}
@@ -28,36 +28,36 @@ class HAZEL_API WindowResizeEvent : public Event {
   unsigned int _width, _height;
 };
 
-class HAZEL_API WindowCloseEvent : public Event {
+class WindowCloseEvent : public Event {
  public:
-  WindowCloseEvent() {}
+  WindowCloseEvent() = default;
 
   EVENT_CLASS_TYPE(WindowClose)
 
   int GetCategoryFlags() const override { return EventCategoryApplication; }
 };
 
-class HAZEL_API AppTickEvent : public Event {
+class AppTickEvent : public Event {
  public:
-  AppTickEvent() {}
+  AppTickEvent() = default;
 
   EVENT_CLASS_TYPE(AppTick)
 
   int GetCategoryFlags() const override { return EventCategoryApplication; }
 };
 
-class HAZEL_API AppUpdateEvent : public Event {
+class AppUpdateEvent : public Event {
  public:
-  AppUpdateEvent() {}
+  AppUpdateEvent() = default;
 
   EVENT_CLASS_TYPE(AppUpdate)
 
   int GetCategoryFlags() const override { return EventCategoryApplication; }
 };
 
-class HAZEL_API AppRenderEvent : public Event {
+class AppRenderEvent : public Event {
  public:
-  AppRenderEvent() {}
+  AppRenderEvent() = default;
 
   EVENT_CLASS_TYPE(AppRender)
 

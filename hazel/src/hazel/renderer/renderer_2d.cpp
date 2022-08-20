@@ -1,11 +1,11 @@
-#include "renderer_2d.h"
+#include "hazel/renderer/renderer_2d.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "hazel/renderer/render_command.h"
+#include "hazel/renderer/shader.h"
+#include "hazel/renderer/vertex_array.h"
 #include "hzpch.h"
-#include "render_command.h"
-#include "shader.h"
-#include "vertex_array.h"
 
 namespace hazel {
 

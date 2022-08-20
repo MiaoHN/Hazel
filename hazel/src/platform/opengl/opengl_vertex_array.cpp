@@ -10,27 +10,27 @@ static unsigned int
 
 ShaderDataTypeToOpenGLBaseType(ShaderDataType type) {
   switch (type) {
-    case hazel::ShaderDataType::Float:
+    case ShaderDataType::Float:
       return GL_FLOAT;
-    case hazel::ShaderDataType::Float2:
+    case ShaderDataType::Float2:
       return GL_FLOAT;
-    case hazel::ShaderDataType::Float3:
+    case ShaderDataType::Float3:
       return GL_FLOAT;
-    case hazel::ShaderDataType::Float4:
+    case ShaderDataType::Float4:
       return GL_FLOAT;
-    case hazel::ShaderDataType::Mat3:
+    case ShaderDataType::Mat3:
       return GL_FLOAT;
-    case hazel::ShaderDataType::Mat4:
+    case ShaderDataType::Mat4:
       return GL_FLOAT;
-    case hazel::ShaderDataType::Int:
+    case ShaderDataType::Int:
       return GL_INT;
-    case hazel::ShaderDataType::Int2:
+    case ShaderDataType::Int2:
       return GL_INT;
-    case hazel::ShaderDataType::Int3:
+    case ShaderDataType::Int3:
       return GL_INT;
-    case hazel::ShaderDataType::Int4:
+    case ShaderDataType::Int4:
       return GL_INT;
-    case hazel::ShaderDataType::Bool:
+    case ShaderDataType::Bool:
       return GL_BOOL;
     case ShaderDataType::None:
       break;
@@ -48,8 +48,7 @@ void OpenGLVertexArray::Bind() const { glBindVertexArray(id_); }
 
 void OpenGLVertexArray::UnBind() const { glBindVertexArray(0); }
 
-void OpenGLVertexArray::AddVertexBuffer(
-    const std::shared_ptr<VertexBuffer>& vertexBuffer) {
+void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer) {
   HZ_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(),
                  "Vertex Buffer has no layout!");
 
@@ -69,8 +68,7 @@ void OpenGLVertexArray::AddVertexBuffer(
   _vertexBuffers.push_back(vertexBuffer);
 }
 
-void OpenGLVertexArray::SetIndexBuffer(
-    const std::shared_ptr<IndexBuffer>& indexBuffer) {
+void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer) {
   glBindVertexArray(id_);
   indexBuffer->Bind();
 

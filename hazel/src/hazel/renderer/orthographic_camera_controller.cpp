@@ -1,4 +1,4 @@
-#include "orthographic_camera_controller.h"
+#include "hazel/renderer/orthographic_camera_controller.h"
 
 #include "hazel/core/input.h"
 #include "hazel/core/key_code.h"
