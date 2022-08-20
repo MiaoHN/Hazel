@@ -6,8 +6,8 @@
 #include <GLFW/glfw3.h>
 // clang-format on
 
+#include "hazel/core/window.h"
 #include "hazel/renderer/graphics_context.h"
-#include "hazel/window.h"
 
 namespace hazel {
 

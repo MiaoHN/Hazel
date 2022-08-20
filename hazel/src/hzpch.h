@@ -12,4 +12,6 @@
 #include <utility>
 #include <vector>
 
+#include "hazel/core/log.h"
+
 #endif  // __HZPCH_H__

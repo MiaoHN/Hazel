@@ -1,7 +1,7 @@
 #ifndef __INPUT_H__
 #define __INPUT_H__
 
-#include "hazel/core.h"
+#include "core.h"
 #include "hzpch.h"
 
 namespace hazel {

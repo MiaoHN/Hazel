@@ -1,7 +1,7 @@
 #ifndef __LAYER_H__
 #define __LAYER_H__
 
-#include "hazel/core.h"
+#include "core.h"
 #include "hazel/core/time_step.h"
 #include "hazel/events/event.h"
 

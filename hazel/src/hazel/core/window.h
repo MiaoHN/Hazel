@@ -1,7 +1,7 @@
 #ifndef __WINDOW_H__
 #define __WINDOW_H__
 
-#include "hazel/core.h"
+#include "hazel/core/core.h"
 #include "hazel/events/event.h"
 #include "hzpch.h"
 

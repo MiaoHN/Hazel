@@ -1,7 +1,7 @@
 #ifndef __BUFFER_H__
 #define __BUFFER_H__
 
-#include "hazel/log.h"
+#include "hazel/core/log.h"
 
 namespace hazel {
 

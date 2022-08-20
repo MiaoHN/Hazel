@@ -1,6 +1,6 @@
 #include "hazel/renderer/buffer.h"
 
-#include "hazel/log.h"
+#include "hazel/core/log.h"
 #include "hazel/renderer/renderer.h"
 #include "hzpch.h"
 #include "platform/opengl/opengl_buffer.h"

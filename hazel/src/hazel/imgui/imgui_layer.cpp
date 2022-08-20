@@ -7,7 +7,7 @@
 
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
-#include "hazel/application.h"
+#include "hazel/core/application.h"
 #include "hzpch.h"
 #include "imgui.h"
 

@@ -1,10 +1,10 @@
 #ifndef __IMGUI_LAYER_H__
 #define __IMGUI_LAYER_H__
 
+#include "hazel/core/layer.h"
 #include "hazel/events/application_event.h"
 #include "hazel/events/key_event.h"
 #include "hazel/events/mouse_event.h"
-#include "hazel/layer.h"
 
 namespace hazel {
 

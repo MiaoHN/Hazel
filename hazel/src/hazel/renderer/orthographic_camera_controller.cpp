@@ -1,7 +1,7 @@
 #include "orthographic_camera_controller.h"
 
-#include "hazel/input.h"
-#include "hazel/key_code.h"
+#include "hazel/core/input.h"
+#include "hazel/core/key_code.h"
 #include "hzpch.h"
 
 namespace hazel {

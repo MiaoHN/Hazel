@@ -1,7 +1,7 @@
 #ifndef __EVENT_H__
 #define __EVENT_H__
 
-#include "hazel/core.h"
+#include "hazel/core/core.h"
 #include "hzpch.h"
 
 namespace hazel {

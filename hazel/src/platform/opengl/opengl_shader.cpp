@@ -5,7 +5,7 @@
 #include <fstream>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "hazel/log.h"
+#include "hazel/core/log.h"
 #include "hzpch.h"
 
 namespace hazel {

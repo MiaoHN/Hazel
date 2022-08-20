@@ -1,8 +1,8 @@
 #ifndef __LOG_H__
 #define __LOG_H__
 
+#include "core.h"
 #include "hzpch.h"
-#include "hazel/core.h"
 #include "spdlog/spdlog.h"
 
 namespace hazel {

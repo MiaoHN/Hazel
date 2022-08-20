@@ -48,7 +48,7 @@ include_directories(hazel/vendor/stb_image)
 file(
   GLOB
   HZ_SRC
-  "hazel/src/hazel/*.cpp"
+  "hazel/src/hazel/core/*.cpp"
   "hazel/src/hazel/imgui/*.cpp"
   "hazel/src/hazel/renderer/*.cpp"
   "hazel/src/platform/windows/*.cpp"

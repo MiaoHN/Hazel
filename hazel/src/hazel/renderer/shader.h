@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "../core.h"
+#include "hazel/core/core.h"
 
 namespace hazel {
 

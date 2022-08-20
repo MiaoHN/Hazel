@@ -1,9 +1,9 @@
 #include "windows_window.h"
 
+#include "hazel/core/log.h"
 #include "hazel/events/application_event.h"
 #include "hazel/events/key_event.h"
 #include "hazel/events/mouse_event.h"
-#include "hazel/log.h"
 #include "hzpch.h"
 #include "platform/opengl/opengl_context.h"
 

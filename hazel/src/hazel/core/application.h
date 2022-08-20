@@ -1,13 +1,13 @@
 #ifndef __APPLICATION_H__
 #define __APPLICATION_H__
 
-#include "hazel/core.h"
+#include "core.h"
 #include "hazel/core/time_step.h"
 #include "hazel/events/application_event.h"
 #include "hazel/imgui/imgui_layer.h"
-#include "hazel/layer_stack.h"
-#include "hazel/window.h"
 #include "hzpch.h"
+#include "layer_stack.h"
+#include "window.h"
 
 namespace hazel {
 

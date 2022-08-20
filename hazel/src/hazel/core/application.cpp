@@ -1,13 +1,13 @@
 #include "application.h"
 
 // clang-format off
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
 // clang-format on
 
 #include "hazel/events/application_event.h"
-#include "hazel/input.h"
 #include "hazel/renderer/renderer.h"
+#include "input.h"
 #include "log.h"
 
 namespace hazel {

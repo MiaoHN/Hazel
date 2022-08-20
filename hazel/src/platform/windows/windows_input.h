@@ -1,7 +1,7 @@
 #ifndef __WINDOWS_INPUT_H__
 #define __WINDOWS_INPUT_H__
 
-#include "hazel/input.h"
+#include "hazel/core/input.h"
 #include "hzpch.h"
 
 namespace hazel {

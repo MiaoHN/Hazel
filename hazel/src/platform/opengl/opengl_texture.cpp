@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 #include <stb_image.h>
 
-#include "hazel/log.h"
+#include "hazel/core/log.h"
 #include "hzpch.h"
 
 namespace hazel {

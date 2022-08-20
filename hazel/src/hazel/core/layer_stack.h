@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "hazel/core.h"
-#include "hazel/layer.h"
+#include "core.h"
+#include "layer.h"
 
 namespace hazel {
 

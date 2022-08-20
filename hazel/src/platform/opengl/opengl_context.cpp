@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 // clang-format on
 
-#include "hazel/log.h"
+#include "hazel/core/log.h"
 #include "hzpch.h"
 
 namespace hazel {
