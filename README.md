@@ -32,5 +32,5 @@ sh ./scripts/build.sh
 
 ## 进度
 
-- [视频 P54](https://www.youtube.com/watch?v=-myXuS3t1W4&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT&index=54)
-- [代码 commit](https://github.com/TheCherno/Hazel/commit/8c35857cc442706ec0196d0298fefa11dfcbe0bf)
+- [视频 P55](https://www.youtube.com/watch?v=YbYV8rRo9_A&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT&index=55)
+- [代码 commit](https://github.com/TheCherno/Hazel/commit/6e84e8d90ef8e3cdbb48e9277865f678bb35523c)
