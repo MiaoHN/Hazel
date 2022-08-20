@@ -5,7 +5,7 @@
 
 namespace hazel {
 
-Renderer::SceneData* Renderer::s_sceneData = new Renderer::SceneData;
+Scope<Renderer::SceneData> Renderer::s_sceneData = CreateScope<Renderer::SceneData>();
 
 void Renderer::Init() { RenderCommand::Init(); }
 

@@ -26,7 +26,7 @@ class RenderCommand {
   }
 
  private:
-  static RendererAPI* s_renderAPI;
+  static Scope<RendererAPI> s_renderAPI;
 };
 
 }  // namespace hazel

@@ -35,7 +35,7 @@ class HAZEL_API Input {
   virtual float GetMouseYImpl() = 0;
 
  private:
-  static Input* s_instance;
+  static Scope<Input> s_instance;
 };
 
 }  // namespace hazel

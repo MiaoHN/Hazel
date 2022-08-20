@@ -10,7 +10,7 @@ class HAZEL_API KeyEvent : public Event {
  public:
   inline int GetKeyCode() const { return _keyCode; }
 
-  virtual int GetCategoryFlags() const override {
+  int GetCategoryFlags() const override {
     return EventCategoryKeyboard | EventCategoryInput;
   }
 
@@ -35,9 +35,7 @@ class HAZEL_API KeyPressedEvent : public KeyEvent {
     return ss.str();
   }
 
-  static EventType GetStaticType() { return EventType::KeyPressed; }
-  virtual EventType GetEventType() const override { return GetStaticType(); }
-  virtual const char* GetName() const override { return "KeyPressed"; }
+  EVENT_CLASS_TYPE(KeyPressed)
 
  private:
   int _repeatCount;
@@ -53,9 +51,7 @@ class HAZEL_API KeyReleasedEvent : public KeyEvent {
     return ss.str();
   }
 
-  static EventType GetStaticType() { return EventType::KeyReleased; }
-  virtual EventType GetEventType() const override { return GetStaticType(); }
-  virtual const char* GetName() const override { return "KeyReleased"; }
+  EVENT_CLASS_TYPE(KeyReleased)
 };
 
 class HAZEL_API KeyTypedEvent : public KeyEvent {
@@ -68,9 +64,7 @@ class HAZEL_API KeyTypedEvent : public KeyEvent {
     return ss.str();
   }
 
-  static EventType GetStaticType() { return EventType::KeyTyped; }
-  virtual EventType GetEventType() const override { return GetStaticType(); }
-  virtual const char* GetName() const override { return "KeyTyped"; }
+  EVENT_CLASS_TYPE(KeyTyped)
 };
 
 }  // namespace hazel

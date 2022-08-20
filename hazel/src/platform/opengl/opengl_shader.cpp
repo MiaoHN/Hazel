@@ -165,14 +165,16 @@ std::unordered_map<unsigned int, std::string> OpenGLShader::PreProcess(
   size_t typeTokenLength = strlen(typeToken);
   size_t pos = source.find(typeToken, 0);
   while (pos != std::string::npos) {
-    size_t eol = source.find_first_of("\n", pos);
-    // HZ_CORE_ASSERT(eol != std::string::npos, "Syntax error");
+    size_t eol = source.find_first_of('\n', pos);
+    HZ_CORE_ASSERT(eol != std::string::npos, "Syntax error");
     size_t begin = pos + typeTokenLength + 1;
     std::string type = source.substr(begin, eol - begin);
     HZ_CORE_ASSERT(ShaderTypeFromString(type), "Invalid shader type specified");
 
-    size_t nextLinePos = source.find_first_not_of("\n", eol);
+    size_t nextLinePos = source.find_first_not_of('\n', eol);
+    HZ_CORE_ASSERT(nextLinePos != std::string::npos, "syntax error");
     pos = source.find(typeToken, nextLinePos);
+
     shaderSources[ShaderTypeFromString(type)] = source.substr(
         nextLinePos, pos - (nextLinePos == std::string::npos ? source.size() - 1
                                                              : nextLinePos));
@@ -245,49 +247,53 @@ void OpenGLShader::Compile(
     return;
   }
 
-  for (auto id : glShaderIDs) glDetachShader(program, id);
+  for (auto id : glShaderIDs) {
+    glDetachShader(program, id);
+    glDeleteShader(id);
+  }
 }
 
 void OpenGLShader::Bind() const { glUseProgram(_id); }
 
 void OpenGLShader::UnBind() const { glUseProgram(0); }
 
-void OpenGLShader::UploadUniformInt(const std::string& name, int value) {
+void OpenGLShader::UploadUniformInt(const std::string& name, int value) const {
   int location = glGetUniformLocation(_id, name.c_str());
   glUniform1i(location, value);
 }
 
-void OpenGLShader::UploadUniformFloat(const std::string& name, float value) {
+void OpenGLShader::UploadUniformFloat(const std::string& name,
+                                      float value) const {
   int location = glGetUniformLocation(_id, name.c_str());
   glUniform1f(location, value);
 }
 
 void OpenGLShader::UploadUniformFloat2(const std::string& name,
-                                       const glm::vec2& value) {
+                                       const glm::vec2& value) const {
   int location = glGetUniformLocation(_id, name.c_str());
   glUniform2f(location, value.x, value.y);
 }
 
 void OpenGLShader::UploadUniformFloat3(const std::string& name,
-                                       const glm::vec3& value) {
+                                       const glm::vec3& value) const {
   int location = glGetUniformLocation(_id, name.c_str());
   glUniform3f(location, value.x, value.y, value.z);
 }
 
 void OpenGLShader::UploadUniformFloat4(const std::string& name,
-                                       const glm::vec4& value) {
+                                       const glm::vec4& value) const {
   int location = glGetUniformLocation(_id, name.c_str());
   glUniform4f(location, value.x, value.y, value.z, value.w);
 }
 
 void OpenGLShader::UploadUniformMat3(const std::string& name,
-                                     const glm::mat3& matrix) {
+                                     const glm::mat3& matrix) const {
   int location = glGetUniformLocation(_id, name.c_str());
   glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
 void OpenGLShader::UploadUniformMat4(const std::string& name,
-                                     const glm::mat4& matrix) {
+                                     const glm::mat4& matrix) const {
   int location = glGetUniformLocation(_id, name.c_str());
   glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }

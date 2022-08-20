@@ -28,7 +28,7 @@ class Renderer {
     glm::mat4 vp;
   };
 
-  static SceneData* s_sceneData;
+  static Scope<SceneData> s_sceneData;
 };
 
 }  // namespace hazel

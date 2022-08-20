@@ -15,15 +15,27 @@ OrthographicCameraController::OrthographicCameraController(float aspectRatio,
 
 void OrthographicCameraController::onUpdate(Timestep ts) {
   if (Input::IsKeyPressed((HZ_KEY_A))) {
-    cameraPosition_.x -= cameraTranslationSpeed * ts;
+    cameraPosition_.x -=
+        std::cos(glm::radians(cameraRotation_)) * cameraTranslationSpeed * ts;
+    cameraPosition_.y -=
+        std::sin(glm::radians(cameraRotation_)) * cameraTranslationSpeed * ts;
   } else if (Input::IsKeyPressed((HZ_KEY_D))) {
-    cameraPosition_.x += cameraTranslationSpeed * ts;
+    cameraPosition_.x +=
+        std::cos(glm::radians(cameraRotation_)) * cameraTranslationSpeed * ts;
+    cameraPosition_.y +=
+        std::sin(glm::radians(cameraRotation_)) * cameraTranslationSpeed * ts;
   }
 
   if (Input::IsKeyPressed((HZ_KEY_W))) {
-    cameraPosition_.y += cameraTranslationSpeed * ts;
+    cameraPosition_.x +=
+        -std::sin(glm::radians(cameraRotation_)) * cameraTranslationSpeed * ts;
+    cameraPosition_.y +=
+        std::cos(glm::radians(cameraRotation_)) * cameraTranslationSpeed * ts;
   } else if (Input::IsKeyPressed((HZ_KEY_S))) {
-    cameraPosition_.y -= cameraTranslationSpeed * ts;
+    cameraPosition_.x -=
+        -std::sin(glm::radians(cameraRotation_)) * cameraTranslationSpeed * ts;
+    cameraPosition_.y -=
+        std::cos(glm::radians(cameraRotation_)) * cameraTranslationSpeed * ts;
   }
 
   if (rotation_) {
@@ -32,6 +44,12 @@ void OrthographicCameraController::onUpdate(Timestep ts) {
     }
     if (Input::IsKeyPressed(HZ_KEY_E)) {
       cameraRotation_ -= cameraRotationSpeed * ts;
+    }
+
+    if (cameraRotation_ > 180.0f) {
+      cameraRotation_ -= 360.0f;
+    } else if (cameraRotation_ <= 180.0f) {
+      cameraRotation_ += 360.0f;
     }
 
     camera_.SetRotation(cameraRotation_);

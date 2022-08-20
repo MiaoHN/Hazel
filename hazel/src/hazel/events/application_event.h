@@ -21,13 +21,9 @@ class HAZEL_API WindowResizeEvent : public Event {
     return ss.str();
   }
 
-  static EventType GetStaticType() { return EventType::WindowResize; }
-  virtual EventType GetEventType() const override { return GetStaticType(); }
-  virtual const char* GetName() const override { return "WindowResize"; }
+  EVENT_CLASS_TYPE(WindowResize)
 
-  virtual int GetCategoryFlags() const override {
-    return EventCategoryApplication;
-  }
+  int GetCategoryFlags() const override { return EventCategoryApplication; }
 
  private:
   unsigned int _width, _height;
@@ -37,52 +33,36 @@ class HAZEL_API WindowCloseEvent : public Event {
  public:
   WindowCloseEvent() {}
 
-  static EventType GetStaticType() { return EventType::WindowClose; }
-  virtual EventType GetEventType() const override { return GetStaticType(); }
-  virtual const char* GetName() const override { return "WindowClose"; }
+  EVENT_CLASS_TYPE(WindowClose)
 
-  virtual int GetCategoryFlags() const override {
-    return EventCategoryApplication;
-  }
+  int GetCategoryFlags() const override { return EventCategoryApplication; }
 };
 
 class HAZEL_API AppTickEvent : public Event {
  public:
   AppTickEvent() {}
 
-  static EventType GetStaticType() { return EventType::AppTick; }
-  virtual EventType GetEventType() const override { return GetStaticType(); }
-  virtual const char* GetName() const override { return "AppTick"; }
+  EVENT_CLASS_TYPE(AppTick)
 
-  virtual int GetCategoryFlags() const override {
-    return EventCategoryApplication;
-  }
+  int GetCategoryFlags() const override { return EventCategoryApplication; }
 };
 
 class HAZEL_API AppUpdateEvent : public Event {
  public:
   AppUpdateEvent() {}
 
-  static EventType GetStaticType() { return EventType::AppUpdate; }
-  virtual EventType GetEventType() const override { return GetStaticType(); }
-  virtual const char* GetName() const override { return "AppUpdate"; }
+  EVENT_CLASS_TYPE(AppUpdate)
 
-  virtual int GetCategoryFlags() const override {
-    return EventCategoryApplication;
-  }
+  int GetCategoryFlags() const override { return EventCategoryApplication; }
 };
 
 class HAZEL_API AppRenderEvent : public Event {
  public:
   AppRenderEvent() {}
 
-  static EventType GetStaticType() { return EventType::AppRender; }
-  virtual EventType GetEventType() const override { return GetStaticType(); }
-  virtual const char* GetName() const override { return "AppRender"; }
+  EVENT_CLASS_TYPE(AppRender)
 
-  virtual int GetCategoryFlags() const override {
-    return EventCategoryApplication;
-  }
+  int GetCategoryFlags() const override { return EventCategoryApplication; }
 };
 
 }  // namespace hazel

@@ -1,8 +1,8 @@
 #ifndef __MOUSE_EVENT_H__
 #define __MOUSE_EVENT_H__
 
-#include "hzpch.h"
 #include "event.h"
+#include "hzpch.h"
 
 namespace hazel {
 
@@ -19,11 +19,9 @@ class HAZEL_API MouseMovedEvent : public Event {
     return ss.str();
   }
 
-  static EventType GetStaticType() { return EventType::MouseMoved; }
-  virtual EventType GetEventType() const override { return GetStaticType(); }
-  virtual const char* GetName() const override { return "MouseMoved"; }
+  EVENT_CLASS_TYPE(MouseMoved)
 
-  virtual int GetCategoryFlags() const override {
+  int GetCategoryFlags() const override {
     return EventCategoryMouse | EventCategoryInput;
   }
 
@@ -45,10 +43,9 @@ class HAZEL_API MouseScrolledEvent : public Event {
     return ss.str();
   }
 
-  static EventType GetStaticType() { return EventType::MouseScrolled; }
-  virtual EventType GetEventType() const override { return GetStaticType(); }
-  virtual const char* GetName() const override { return "MouseScrolled"; }
-  virtual int GetCategoryFlags() const override {
+  EVENT_CLASS_TYPE(MouseScrolled)
+
+  int GetCategoryFlags() const override {
     return EventCategoryMouse | EventCategoryInput;
   }
 
@@ -60,7 +57,7 @@ class HAZEL_API MouseButtonEvent : public Event {
  public:
   inline int GetMouseButton() const { return _button; }
 
-  virtual int GetCategoryFlags() const override {
+  int GetCategoryFlags() const override {
     return EventCategoryMouseButton | EventCategoryInput;
   }
 
@@ -80,9 +77,7 @@ class HAZEL_API MouseButtonPressedEvent : public MouseButtonEvent {
     return ss.str();
   }
 
-  static EventType GetStaticType() { return EventType::MouseButtonPressed; }
-  virtual EventType GetEventType() const override { return GetStaticType(); }
-  virtual const char* GetName() const override { return "MouseButtonPressed"; }
+  EVENT_CLASS_TYPE(MouseButtonPressed)
 };
 
 class HAZEL_API MouseButtonReleasedEvent : public MouseButtonEvent {
@@ -95,9 +90,7 @@ class HAZEL_API MouseButtonReleasedEvent : public MouseButtonEvent {
     return ss.str();
   }
 
-  static EventType GetStaticType() { return EventType::MouseButtonReleased; }
-  virtual EventType GetEventType() const override { return GetStaticType(); }
-  virtual const char* GetName() const override { return "MouseButtonReleased"; }
+  EVENT_CLASS_TYPE(MouseButtonReleased)
 };
 
 }  // namespace hazel

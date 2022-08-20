@@ -9,7 +9,7 @@
 class ExampleLayer : public hazel::Layer {
  public:
   ExampleLayer()
-      : Layer("Example"), cameraController_(1280.0f / 720.0f, false) {
+      : Layer("Example"), cameraController_(1280.0f / 720.0f, true) {
     _vertexArray.reset(hazel::VertexArray::Create());
 
     float vertices[3 * 7] = {

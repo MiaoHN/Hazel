@@ -24,9 +24,9 @@ WindowsWindow::WindowsWindow(const WindowProps& props) { Init(props); }
 WindowsWindow::~WindowsWindow() { Shutdown(); }
 
 void WindowsWindow::Init(const WindowProps& props) {
-  _data.title = props.title;
-  _data.width = props.width;
-  _data.height = props.height;
+  data_.title = props.title;
+  data_.width = props.width;
+  data_.height = props.height;
 
   HZ_CORE_INFO("Creating window {0} ({1}, {2})", props.title, props.width,
                props.height);
@@ -40,18 +40,18 @@ void WindowsWindow::Init(const WindowProps& props) {
     s_GLFWInitialized = true;
   }
 
-  _window = glfwCreateWindow((int)props.width, (int)props.height,
-                             _data.title.c_str(), nullptr, nullptr);
+  window_ = glfwCreateWindow((int)props.width, (int)props.height,
+                             data_.title.c_str(), nullptr, nullptr);
 
-  _context = new OpenGLContext(_window);
-  _context->Init();
+  context_ = CreateScope<OpenGLContext>(window_);
+  context_->Init();
 
-  glfwSetWindowUserPointer(_window, &_data);
+  glfwSetWindowUserPointer(window_, &data_);
   SetVSync(true);
 
   // Set GLFW callbacks
   glfwSetWindowSizeCallback(
-      _window, [](GLFWwindow* window, int width, int height) {
+      window_, [](GLFWwindow* window, int width, int height) {
         WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
         data.width = width;
         data.height = height;
@@ -59,12 +59,12 @@ void WindowsWindow::Init(const WindowProps& props) {
         WindowResizeEvent event(width, height);
         data.eventCallback(event);
       });
-  glfwSetWindowCloseCallback(_window, [](GLFWwindow* window) {
+  glfwSetWindowCloseCallback(window_, [](GLFWwindow* window) {
     WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
     WindowCloseEvent event;
     data.eventCallback(event);
   });
-  glfwSetKeyCallback(_window, [](GLFWwindow* window, int key, int scancode,
+  glfwSetKeyCallback(window_, [](GLFWwindow* window, int key, int scancode,
                                  int action, int mods) {
     WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
@@ -86,13 +86,13 @@ void WindowsWindow::Init(const WindowProps& props) {
       }
     }
   });
-  glfwSetCharCallback(_window, [](GLFWwindow* window, unsigned int character) {
+  glfwSetCharCallback(window_, [](GLFWwindow* window, unsigned int character) {
     WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
     KeyTypedEvent event(character);
     data.eventCallback(event);
   });
   glfwSetMouseButtonCallback(
-      _window, [](GLFWwindow* window, int button, int action, int mods) {
+      window_, [](GLFWwindow* window, int button, int action, int mods) {
         WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
         switch (action) {
           case GLFW_PRESS: {
@@ -108,24 +108,24 @@ void WindowsWindow::Init(const WindowProps& props) {
         }
       });
   glfwSetScrollCallback(
-      _window, [](GLFWwindow* window, double xOffset, double yOffset) {
+      window_, [](GLFWwindow* window, double xOffset, double yOffset) {
         WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
         MouseScrolledEvent event((float)xOffset, (float)yOffset);
         data.eventCallback(event);
       });
   glfwSetCursorPosCallback(
-      _window, [](GLFWwindow* window, double xPos, double yPos) {
+      window_, [](GLFWwindow* window, double xPos, double yPos) {
         WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
         MouseMovedEvent event((float)xPos, (float)yPos);
         data.eventCallback(event);
       });
 }
 
-void WindowsWindow::Shutdown() { glfwDestroyWindow(_window); }
+void WindowsWindow::Shutdown() { glfwDestroyWindow(window_); }
 
 void WindowsWindow::OnUpdate() {
   glfwPollEvents();
-  _context->SwapBuffers();
+  context_->SwapBuffers();
 }
 
 void WindowsWindow::SetVSync(bool enabled) {
@@ -134,9 +134,9 @@ void WindowsWindow::SetVSync(bool enabled) {
   } else {
     glfwSwapInterval(0);
   }
-  _data.vSync = enabled;
+  data_.vSync = enabled;
 }
 
-bool WindowsWindow::IsVSync() const { return _data.vSync; }
+bool WindowsWindow::IsVSync() const { return data_.vSync; }
 
 }  // namespace hazel
