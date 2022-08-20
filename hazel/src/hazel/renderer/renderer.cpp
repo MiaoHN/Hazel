@@ -2,12 +2,17 @@
 
 #include "hzpch.h"
 #include "platform/opengl/opengl_shader.h"
+#include "renderer_2d.h"
 
 namespace hazel {
 
-Scope<Renderer::SceneData> Renderer::s_sceneData = CreateScope<Renderer::SceneData>();
+Scope<Renderer::SceneData> Renderer::s_sceneData =
+    CreateScope<Renderer::SceneData>();
 
-void Renderer::Init() { RenderCommand::Init(); }
+void Renderer::Init() {
+  RenderCommand::Init();
+  Renderer2D::Init();
+}
 
 void Renderer::BeginScene(OrthographicCamera& camera) {
   s_sceneData->vp = camera.GetVP();

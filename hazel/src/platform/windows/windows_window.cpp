@@ -9,7 +9,7 @@
 
 namespace hazel {
 
-static bool s_GLFWInitialized = false;
+static uint8_t s_GLFWWindowCount = 0;
 
 static void GLFWErrorCallback(int error, const char* description) {
   HZ_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
@@ -31,17 +31,17 @@ void WindowsWindow::Init(const WindowProps& props) {
   HZ_CORE_INFO("Creating window {0} ({1}, {2})", props.title, props.width,
                props.height);
 
-  if (!s_GLFWInitialized) {
-    // TODO: glfwTerminate on system shutdown
+  if (s_GLFWWindowCount == 0) {
+    HZ_CORE_INFO("Initializing GLFW");
     int success = glfwInit();
     HZ_CORE_ASSERT(success, "Could not initialize GLFW!");
 
     glfwSetErrorCallback(GLFWErrorCallback);
-    s_GLFWInitialized = true;
   }
 
   window_ = glfwCreateWindow((int)props.width, (int)props.height,
                              data_.title.c_str(), nullptr, nullptr);
+  ++s_GLFWWindowCount;
 
   context_ = CreateScope<OpenGLContext>(window_);
   context_->Init();
@@ -121,7 +121,13 @@ void WindowsWindow::Init(const WindowProps& props) {
       });
 }
 
-void WindowsWindow::Shutdown() { glfwDestroyWindow(window_); }
+void WindowsWindow::Shutdown() {
+  glfwDestroyWindow(window_);
+  if (--s_GLFWWindowCount == 0) {
+    HZ_CORE_INFO("Terminating GLFW");
+    glfwTerminate();
+  }
+}
 
 void WindowsWindow::OnUpdate() {
   glfwPollEvents();

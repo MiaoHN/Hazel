@@ -18,13 +18,10 @@
 #include "hazel/renderer/orthographic_camera.h"
 #include "hazel/renderer/render_command.h"
 #include "hazel/renderer/renderer.h"
+#include "hazel/renderer/renderer_2d.h"
 #include "hazel/renderer/shader.h"
 #include "hazel/renderer/texture.h"
 #include "hazel/renderer/vertex_array.h"
-// -----
-
-// ----- Entry Point
-#include "hazel/core/entry_point.h"
 // -----
 
 #endif  // __HAZEL_H__

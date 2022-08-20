@@ -33,6 +33,9 @@ OpenGLTexture2D::OpenGLTexture2D(const std::string& path) : _path(path) {
   glTextureParameteri(_id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTextureParameteri(_id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
+  glTextureParameteri(_id, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTextureParameteri(_id, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
   glTextureSubImage2D(_id, 0, 0, 0, _width, _height, dataFormat,
                       GL_UNSIGNED_BYTE, data);
 

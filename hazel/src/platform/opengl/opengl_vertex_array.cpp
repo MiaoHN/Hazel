@@ -32,6 +32,8 @@ ShaderDataTypeToOpenGLBaseType(ShaderDataType type) {
       return GL_INT;
     case hazel::ShaderDataType::Bool:
       return GL_BOOL;
+    case ShaderDataType::None:
+      break;
   }
 
   HZ_CORE_ASSERT(false, "Unknown ShaderDataType!");
@@ -61,8 +63,7 @@ void OpenGLVertexArray::AddVertexBuffer(
     glVertexAttribPointer(_vertexBufferIndexOffset, element.GetComponentCount(),
                           ShaderDataTypeToOpenGLBaseType(element.type),
                           element.normalized ? GL_TRUE : GL_FALSE,
-                          layout.GetStride(),
-                          (const void*)(intptr_t)element.offset);
+                          layout.GetStride(), (const void*)element.offset);
     _vertexBufferIndexOffset++;
   }
   _vertexBuffers.push_back(vertexBuffer);

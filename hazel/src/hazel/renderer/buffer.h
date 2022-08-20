@@ -54,10 +54,10 @@ struct BufferElement {
   std::string name;
   ShaderDataType type;
   unsigned int size;
-  unsigned int offset;
+  size_t offset;
   bool normalized;
 
-  BufferElement() {}
+  BufferElement() = default;
 
   BufferElement(ShaderDataType _type, const std::string& _name,
                 bool _normalized = false)
@@ -122,7 +122,7 @@ class BufferLayout {
 
  private:
   void CalculateOffsetsAndStride() {
-    unsigned int offset = 0;
+    size_t offset = 0;
     _stride = 0;
     for (auto& element : _elements) {
       element.offset = offset;
@@ -146,7 +146,7 @@ class VertexBuffer {
   virtual const BufferLayout& GetLayout() const = 0;
   virtual void SetLayout(const BufferLayout& layout) = 0;
 
-  static VertexBuffer* Create(float* vertices, unsigned int size);
+  static Ref<VertexBuffer> Create(float* vertices, unsigned int size);
 };
 
 class IndexBuffer {
@@ -158,7 +158,7 @@ class IndexBuffer {
 
   virtual unsigned int GetCount() const = 0;
 
-  static IndexBuffer* Create(unsigned int* indices, unsigned size);
+  static Ref<IndexBuffer> Create(unsigned int* indices, unsigned size);
 };
 
 }  // namespace hazel
