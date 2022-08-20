@@ -23,18 +23,20 @@ class Application {
   void PushLayer(Layer* layer);
   void PushOverlay(Layer* layer);
 
-  inline Window& GetWindow() { return *_window; }
+  inline Window& GetWindow() { return *window_; }
 
   inline static Application& Get() { return *s_instance; }
 
  private:
   bool OnWindowClose(WindowCloseEvent& e);
+  bool OnWindowResize(WindowResizeEvent& e);
 
  private:
-  std::unique_ptr<Window> _window;
-  ImGuiLayer* _imguiLayer;
-  bool _running = true;
-  LayerStack _layerStack;
+  std::unique_ptr<Window> window_;
+  ImGuiLayer* imguiLayer_;
+  bool running_ = true;
+  bool minimized_ = false;
+  LayerStack layerStack_;
 
   float _lastFrameTime = 0.0f;
 

@@ -20,13 +20,13 @@ Application::Application() {
   HZ_CORE_ASSERT(!s_instance, "Application already exists!");
   s_instance = this;
 
-  _window = std::unique_ptr<Window>(Window::Create());
-  _window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+  window_ = std::unique_ptr<Window>(Window::Create());
+  window_->SetEventCallback(BIND_EVENT_FN(OnEvent));
 
   Renderer::Init();
 
-  _imguiLayer = new ImGuiLayer();
-  PushOverlay(_imguiLayer);
+  imguiLayer_ = new ImGuiLayer();
+  PushOverlay(imguiLayer_);
 }
 
 Application::~Application() {}
@@ -34,8 +34,9 @@ Application::~Application() {}
 void Application::OnEvent(Event& e) {
   EventDispatcher dispatcher(e);
   dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+  dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
 
-  for (auto it = _layerStack.end(); it != _layerStack.begin();) {
+  for (auto it = layerStack_.end(); it != layerStack_.begin();) {
     (*--it)->OnEvent(e);
     if (e.handled) {
       break;
@@ -43,32 +44,45 @@ void Application::OnEvent(Event& e) {
   }
 }
 
-void Application::PushLayer(Layer* layer) { _layerStack.PushLayer(layer); }
+void Application::PushLayer(Layer* layer) { layerStack_.PushLayer(layer); }
 
-void Application::PushOverlay(Layer* layer) { _layerStack.PushOverlay(layer); }
+void Application::PushOverlay(Layer* layer) { layerStack_.PushOverlay(layer); }
 
 void Application::Run() {
-  while (_running) {
-    float time = (float)glfwGetTime();
-    Timestep timestep = time - _lastFrameTime;
+  while (running_) {
+    auto time = static_cast<float>(glfwGetTime());
+    Timestep ts = time - _lastFrameTime;
     _lastFrameTime = time;
-    for (Layer* layer : _layerStack) {
-      layer->OnUpdate(timestep);
+
+    if (!minimized_) {
+      for (Layer* layer : layerStack_) {
+        layer->OnUpdate(ts);
+      }
     }
 
-    _imguiLayer->Begin();
-    for (Layer* layer : _layerStack) {
+    imguiLayer_->Begin();
+    for (Layer* layer : layerStack_) {
       layer->OnImGuiRender();
     }
-    _imguiLayer->End();
+    imguiLayer_->End();
 
-    _window->OnUpdate();
+    window_->OnUpdate();
   }
 }
 
 bool Application::OnWindowClose(WindowCloseEvent& e) {
-  _running = false;
+  running_ = false;
   return true;
+}
+bool Application::OnWindowResize(WindowResizeEvent& e) {
+  if (e.GetWidth() == 0 || e.GetHeight() == 0) {
+    minimized_ = true;
+    return false;
+  }
+  minimized_ = false;
+  Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+
+  return false;
 }
 
 }  // namespace hazel
