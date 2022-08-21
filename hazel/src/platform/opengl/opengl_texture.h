@@ -21,7 +21,7 @@ class OpenGLTexture2D : public Texture2D {
 
  private:
   std::string  path_;
-  unsigned int width_, height_;
+  int width_, height_;
   unsigned int id_;
 
   unsigned int internalFormat_, dataFormat_;

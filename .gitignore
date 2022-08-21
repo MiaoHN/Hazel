@@ -4,6 +4,7 @@ cmake-build-*/
 build/
 lib/
 bin/
-.ini
+*.ini
+*.json
 out/
 .vs/

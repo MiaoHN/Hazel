@@ -101,38 +101,38 @@ class BufferLayout {
   BufferLayout() {}
 
   BufferLayout(const std::initializer_list<BufferElement>& elements)
-      : _elements(elements) {
+      : elements_(elements) {
     CalculateOffsetsAndStride();
   }
 
-  inline unsigned int                      GetStride() const { return _stride; }
+  inline unsigned int                      GetStride() const { return stride_; }
   inline const std::vector<BufferElement>& GetElements() const {
-    return _elements;
+    return elements_;
   }
 
-  std::vector<BufferElement>::iterator begin() { return _elements.begin(); }
-  std::vector<BufferElement>::iterator end() { return _elements.end(); }
+  std::vector<BufferElement>::iterator begin() { return elements_.begin(); }
+  std::vector<BufferElement>::iterator end() { return elements_.end(); }
   std::vector<BufferElement>::const_iterator begin() const {
-    return _elements.begin();
+    return elements_.begin();
   }
   std::vector<BufferElement>::const_iterator end() const {
-    return _elements.end();
+    return elements_.end();
   }
 
  private:
   void CalculateOffsetsAndStride() {
     size_t offset = 0;
-    _stride       = 0;
-    for (auto& element : _elements) {
+    stride_       = 0;
+    for (auto& element : elements_) {
       element.offset = offset;
       offset += element.size;
-      _stride += element.size;
+      stride_ += element.size;
     }
   }
 
  private:
-  std::vector<BufferElement> _elements;
-  unsigned int               _stride = 0;
+  std::vector<BufferElement> elements_;
+  unsigned int               stride_ = 0;
 };
 
 class VertexBuffer {

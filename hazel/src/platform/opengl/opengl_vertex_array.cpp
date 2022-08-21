@@ -40,15 +40,33 @@ ShaderDataTypeToOpenGLBaseType(ShaderDataType type) {
   return 0;
 }
 
-OpenGLVertexArray::OpenGLVertexArray() { glCreateVertexArrays(1, &id_); }
+OpenGLVertexArray::OpenGLVertexArray() {
+  HZ_PROFILE_FUNCTION();
 
-OpenGLVertexArray::~OpenGLVertexArray() { glDeleteVertexArrays(1, &id_); }
+  glCreateVertexArrays(1, &id_);
+}
 
-void OpenGLVertexArray::Bind() const { glBindVertexArray(id_); }
+OpenGLVertexArray::~OpenGLVertexArray() {
+  HZ_PROFILE_FUNCTION();
 
-void OpenGLVertexArray::UnBind() const { glBindVertexArray(0); }
+  glDeleteVertexArrays(1, &id_);
+}
+
+void OpenGLVertexArray::Bind() const {
+  HZ_PROFILE_FUNCTION();
+
+  glBindVertexArray(id_);
+}
+
+void OpenGLVertexArray::UnBind() const {
+  HZ_PROFILE_FUNCTION();
+
+  glBindVertexArray(0);
+}
 
 void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer) {
+  HZ_PROFILE_FUNCTION();
+
   HZ_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(),
                  "Vertex Buffer has no layout!");
 
@@ -69,6 +87,8 @@ void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer) {
 }
 
 void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer) {
+  HZ_PROFILE_FUNCTION();
+
   glBindVertexArray(id_);
   indexBuffer->Bind();
 

@@ -15,6 +15,8 @@ namespace hazel {
 Application* Application::s_instance = nullptr;
 
 Application::Application() {
+  HZ_PROFILE_FUNCTION();
+
   HZ_CORE_ASSERT(!s_instance, "Application already exists!");
   s_instance = this;
 
@@ -27,9 +29,14 @@ Application::Application() {
   PushOverlay(imguiLayer_);
 }
 
-Application::~Application() { Renderer::Shutdown(); }
+Application::~Application() {
+  HZ_PROFILE_FUNCTION();
+
+  Renderer::Shutdown();
+}
 
 void Application::OnEvent(Event& e) {
+  HZ_PROFILE_FUNCTION();
   EventDispatcher dispatcher(e);
   dispatcher.Dispatch<WindowCloseEvent>(
       HZ_BIND_EVENT_FN(Application::OnWindowClose));
@@ -44,25 +51,40 @@ void Application::OnEvent(Event& e) {
   }
 }
 
-void Application::PushLayer(Layer* layer) { layerStack_.PushLayer(layer); }
+void Application::PushLayer(Layer* layer) {
+  HZ_PROFILE_FUNCTION();
 
-void Application::PushOverlay(Layer* layer) { layerStack_.PushOverlay(layer); }
+  layerStack_.PushLayer(layer);
+}
+
+void Application::PushOverlay(Layer* layer) {
+  HZ_PROFILE_FUNCTION();
+
+  layerStack_.PushOverlay(layer);
+}
 
 void Application::Run() {
+  HZ_PROFILE_FUNCTION();
+
   while (running_) {
+    HZ_PROFILE_SCOPE("Run Loop");
     auto     time  = static_cast<float>(glfwGetTime());
     Timestep ts    = time - _lastFrameTime;
     _lastFrameTime = time;
 
     if (!minimized_) {
+      HZ_PROFILE_SCOPE("LayerStack OnUpdate");
       for (Layer* layer : layerStack_) {
         layer->OnUpdate(ts);
       }
     }
 
     imguiLayer_->Begin();
-    for (Layer* layer : layerStack_) {
-      layer->OnImGuiRender();
+    {
+      HZ_PROFILE_SCOPE("LayerStack OnImGuiRender");
+      for (Layer* layer : layerStack_) {
+        layer->OnImGuiRender();
+      }
     }
     imguiLayer_->End();
 
@@ -71,10 +93,12 @@ void Application::Run() {
 }
 
 bool Application::OnWindowClose(WindowCloseEvent& e) {
+  HZ_PROFILE_FUNCTION();
   running_ = false;
   return true;
 }
 bool Application::OnWindowResize(WindowResizeEvent& e) {
+  HZ_PROFILE_FUNCTION();
   if (e.GetWidth() == 0 || e.GetHeight() == 0) {
     minimized_ = true;
     return false;
