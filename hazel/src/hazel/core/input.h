@@ -26,6 +26,8 @@ class Input {
   inline static float GetMouseX() { return s_instance->GetMouseXImpl(); }
   inline static float GetMouseY() { return s_instance->GetMouseYImpl(); }
 
+  static Scope<Input> Create();
+
  protected:
   virtual bool  IsKeyPressedImpl(int keyCode)        = 0;
   virtual bool  IsMouseButtonPressedImpl(int button) = 0;

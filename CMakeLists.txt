@@ -53,6 +53,7 @@ file(
         GLOB
         HZ_SRC
         "hazel/src/hazel/core/*.cpp"
+        "hazel/src/hazel/debug/*.cpp"
         "hazel/src/hazel/imgui/*.cpp"
         "hazel/src/hazel/renderer/*.cpp"
         "hazel/src/platform/windows/*.cpp"

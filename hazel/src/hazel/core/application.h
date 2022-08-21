@@ -9,14 +9,14 @@
 #include "hazel/imgui/imgui_layer.h"
 #include "hzpch.h"
 
+int main(int argc, char** argv);
+
 namespace hazel {
 
 class Application {
  public:
   Application();
   virtual ~Application();
-
-  void Run();
 
   void OnEvent(Event& e);
 
@@ -28,6 +28,8 @@ class Application {
   inline static Application& Get() { return *s_instance; }
 
  private:
+  void Run();
+
   bool OnWindowClose(WindowCloseEvent& e);
   bool OnWindowResize(WindowResizeEvent& e);
 
@@ -43,6 +45,7 @@ class Application {
 
  private:
   static Application* s_instance;
+  friend int ::main(int argc, char** argv);
 };
 
 // To be defined in client

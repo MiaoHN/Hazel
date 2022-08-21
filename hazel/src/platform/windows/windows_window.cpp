@@ -4,6 +4,7 @@
 #include "hazel/events/application_event.h"
 #include "hazel/events/key_event.h"
 #include "hazel/events/mouse_event.h"
+#include "hazel/renderer/renderer.h"
 #include "hzpch.h"
 #include "platform/opengl/opengl_context.h"
 
@@ -13,10 +14,6 @@ static uint8_t s_GLFWWindowCount = 0;
 
 static void GLFWErrorCallback(int error, const char* description) {
   HZ_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
-}
-
-Scope<Window> Window::Create(const WindowProps& props) {
-  return CreateScope<WindowsWindow>(props);
 }
 
 WindowsWindow::WindowsWindow(const WindowProps& props) {
@@ -45,6 +42,10 @@ void WindowsWindow::Init(const WindowProps& props) {
 
   {
     HZ_PROFILE_SCOPE("glfwCreateWindow");
+#if defined(HZ_DEBUG)
+    if (Renderer::GetAPI() == RendererAPI::API::OpenGL)
+      glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+#endif
     window_ = glfwCreateWindow((int)props.width, (int)props.height,
                                data_.title.c_str(), nullptr, nullptr);
     ++s_GLFWWindowCount;

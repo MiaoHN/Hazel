@@ -43,8 +43,8 @@ void Application::OnEvent(Event& e) {
   dispatcher.Dispatch<WindowResizeEvent>(
       HZ_BIND_EVENT_FN(Application::OnWindowResize));
 
-  for (auto it = layerStack_.end(); it != layerStack_.begin();) {
-    (*--it)->OnEvent(e);
+  for (auto it = layerStack_.rbegin(); it != layerStack_.rend(); ++it) {
+    (*it)->OnEvent(e);
     if (e.handled) {
       break;
     }

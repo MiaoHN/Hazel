@@ -3,15 +3,20 @@
 #include <algorithm>
 #include <chrono>
 #include <fstream>
+#include <iomanip>
+#include <mutex>
 #include <string>
 #include <thread>
 
 namespace hazel {
 
+using FloatingPointMicroseconds = std::chrono::duration<double, std::micro>;
+
 struct ProfileResult {
-  std::string name;
-  long long   start, end;
-  uint32_t    threadID;
+  std::string               name;
+  FloatingPointMicroseconds start;
+  std::chrono::microseconds elapsedTime;
+  std::thread::id           threadID;
 };
 
 struct InstrumentationSession {
@@ -20,60 +25,27 @@ struct InstrumentationSession {
 
 class Instrumentor {
  public:
-  Instrumentor() : currentSession_(nullptr), profileCount_(0) {}
+  Instrumentor() : currentSession_(nullptr) {}
 
   void beginSession(const std::string& name,
-                    const std::string  filepath = "result.json") {
-    outputStream_.open(filepath);
-    writeHeader();
-    currentSession_ = new InstrumentationSession{name};
-  }
+                    const std::string  filepath = "result.json");
 
-  void endSession() {
-    writeFooter();
-    outputStream_.close();
-    delete currentSession_;
-    currentSession_ = nullptr;
-    profileCount_   = 0;
-  }
+  void endSession();
 
-  void writeProfile(const ProfileResult& result) {
-    if (profileCount_++ > 0) {
-      outputStream_ << ",";
-    }
+  void writeProfile(const ProfileResult& result);
 
-    std::string name = result.name;
-    std::replace(name.begin(), name.end(), '"', '\'');
-
-    outputStream_ << "{";
-    outputStream_ << "\"cat\":\"function\",";
-    outputStream_ << "\"dur\":" << (result.end - result.start) << ',';
-    outputStream_ << "\"name\":\"" << name << "\",";
-    outputStream_ << "\"ph\":\"X\",";
-    outputStream_ << "\"pid\":0,";
-    outputStream_ << "\"tid\":" << result.threadID << ",";
-    outputStream_ << "\"ts\":" << result.start;
-    outputStream_ << "}";
-
-    outputStream_.flush();
-  }
-
-  void writeHeader() {
-    outputStream_ << "{\"otherData\": {},\"traceEvents\":[";
-    outputStream_.flush();
-  }
-
-  void writeFooter() {
-    outputStream_ << "]}";
-    outputStream_.flush();
-  }
-
-  static Instrumentor& Get() {
-    static Instrumentor s_instance;
-    return s_instance;
-  }
+  static Instrumentor& Get();
 
  private:
+  void writeHeader();
+
+  void writeFooter();
+
+  void internalEndSession();
+
+ private:
+  std::mutex mutex_;
+
   InstrumentationSession* currentSession_;
   std::ofstream           outputStream_;
   int                     profileCount_;
@@ -82,7 +54,7 @@ class Instrumentor {
 class InstrumentationTimer {
  public:
   InstrumentationTimer(const char* name) : name_(name), stopped_(false) {
-    startTimePoint_ = std::chrono::high_resolution_clock::now();
+    startTimePoint_ = std::chrono::steady_clock::now();
   }
 
   ~InstrumentationTimer() {
@@ -92,20 +64,19 @@ class InstrumentationTimer {
   }
 
   void stop() {
-    auto endTimePoint = std::chrono::high_resolution_clock::now();
+    auto endTimePoint = std::chrono::steady_clock::now();
 
-    long long start =
-        std::chrono::time_point_cast<std::chrono::microseconds>(startTimePoint_)
-            .time_since_epoch()
-            .count();
-    long long end =
+    auto highResStart =
+        FloatingPointMicroseconds{startTimePoint_.time_since_epoch()};
+
+    auto elapsedTime =
         std::chrono::time_point_cast<std::chrono::microseconds>(endTimePoint)
-            .time_since_epoch()
-            .count();
+            .time_since_epoch() -
+        std::chrono::time_point_cast<std::chrono::microseconds>(startTimePoint_)
+            .time_since_epoch();
 
-    uint32_t threadID =
-        std::hash<std::thread::id>{}(std::this_thread::get_id());
-    Instrumentor::Get().writeProfile({name_, start, end, threadID});
+    Instrumentor::Get().writeProfile(
+        {name_, highResStart, elapsedTime, std::this_thread::get_id()});
 
     stopped_ = true;
   }
@@ -114,22 +85,48 @@ class InstrumentationTimer {
   const char* name_;
   bool        stopped_;
 
-  std::chrono::time_point<std::chrono::high_resolution_clock> startTimePoint_;
+  std::chrono::time_point<std::chrono::steady_clock> startTimePoint_;
 };
 
 }  // namespace hazel
 
-#define HZ_PROFILE 1
-#if HZ_PROFILE
+#ifdef HZ_PROFILE
+
+// Resolve which function signature macro will be used. Note that this only
+// is resolved when the (pre)compiler starts, so the syntax highlighting
+// could mark the wrong one in your editor!
+#if defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || \
+    (defined(__ICC) && (__ICC >= 600)) || defined(__ghs__)
+#define HZ_FUNC_SIG __PRETTY_FUNCTION__
+#elif defined(__DMC__) && (__DMC__ >= 0x810)
+#define HZ_FUNC_SIG __PRETTY_FUNCTION__
+#elif defined(__FUNCSIG__)
+#define HZ_FUNC_SIG __FUNCSIG__
+#elif (defined(__INTEL_COMPILER) && (__INTEL_COMPILER >= 600)) || \
+    (defined(__IBMCPP__) && (__IBMCPP__ >= 500))
+#define HZ_FUNC_SIG __FUNCTION__
+#elif defined(__BORLANDC__) && (__BORLANDC__ >= 0x550)
+#define HZ_FUNC_SIG __FUNC__
+#elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901)
+#define HZ_FUNC_SIG __func__
+#elif defined(__cplusplus) && (__cplusplus >= 201103)
+#define HZ_FUNC_SIG __func__
+#else
+#define HZ_FUNC_SIG "HZ_FUNC_SIG unknown!"
+#endif
+
 #define HZ_PROFILE_BEGIN_SESSION(name, filepath) \
   ::hazel::Instrumentor::Get().beginSession(name, filepath)
 #define HZ_PROFILE_END_SESSION() ::hazel::Instrumentor::Get().endSession()
 #define HZ_PROFILE_SCOPE(name) \
   ::hazel::InstrumentationTimer timer##__LINE__(name)
-#define HZ_PROFILE_FUNCTION() HZ_PROFILE_SCOPE(__PRETTY_FUNCTION__)
+#define HZ_PROFILE_FUNCTION() HZ_PROFILE_SCOPE(HZ_FUNC_SIG)
+
 #else
+
 #define HZ_PROFILE_BEGIN_SESSION(name, filepath)
 #define HZ_PROFILE_END_SESSION()
 #define HZ_PROFILE_SCOPE(name)
 #define HZ_PROFILE_FUNCTION()
+
 #endif  // HZ_PROFILE
